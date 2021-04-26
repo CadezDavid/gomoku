@@ -18,7 +18,7 @@ public class Gomoku {
     private static BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
-        // Ustvari okno
+        // Ustvari okno. svsvjnkccjkasdmkasdlk
         Okno okno = new Okno(800, 800);
         okno.pack();
         // okno.setVisible(true);
