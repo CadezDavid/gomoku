@@ -3,9 +3,9 @@ package logika;
 public class Igralec {
 
     private String ime;
-    private String vrsta;
+    private Vrsta vrsta;
 
-	public Igralec(String vrsta, String ime) {
+	public Igralec(Vrsta vrsta, String ime) {
         setIme(ime);
         setVrsta(vrsta);
     }
@@ -18,11 +18,11 @@ public class Igralec {
 		this.ime = ime;
 	}
 
-	public String getVrsta() {
+	public Vrsta getVrsta() {
 		return vrsta;
 	}
 
-	public void setVrsta(String vrsta) {
+	public void setVrsta(Vrsta vrsta) {
 		this.vrsta = vrsta;
 	}
 }

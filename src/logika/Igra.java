@@ -12,7 +12,7 @@ public class Igra {
     // plosca[i][j] predstavlja presek i-te vrstice in j-tega stolpca
     private Polje[][] plosca;
     // napotezi oznacuje kdo je na potezi, beli ali crni
-    private Zetoni napotezi;
+    private Zetoni naPotezi;
     // igralca bosta predstavljena kot slovar, kjer je
     // ključ zeton in vrednost igralec (z atributoma vrsta in ime)
     private EnumMap<Zetoni, Igralec> igralca;
@@ -22,7 +22,7 @@ public class Igra {
 
     public Igra(EnumMap<Zetoni, Igralec> igralca) {
         // Zacne crni
-        napotezi = Zetoni.CRNI;
+        naPotezi = Zetoni.CRNI;
         // Stanje se spremeni v V_TEKU
         stanje = Stanje.V_TEKU;
         // Plosca se po angl. "initialize" in napolni
@@ -40,19 +40,19 @@ public class Igra {
         // Pogleda, če je polje, ki ga želi igralec igrati prazno
         // Če je, tja postavi žeton igralca na potezi in vrne true
         if (plosca[koordinati.getX()][koordinati.getY()] == Polje.PRAZNO) {
-            plosca[koordinati.getX()][koordinati.getY()] = (napotezi == Zetoni.BELI) ? Polje.BELI : Polje.CRNI;
-            setNapotezi(napotezi == Zetoni.BELI ? Zetoni.CRNI : Zetoni.BELI);
+            plosca[koordinati.getX()][koordinati.getY()] = (naPotezi == Zetoni.BELI) ? Polje.BELI : Polje.CRNI;
+            setNapotezi(naPotezi == Zetoni.BELI ? Zetoni.CRNI : Zetoni.BELI);
             return true;
         } else
             return false;
     }
 
     public Zetoni getNapotezi() {
-        return napotezi;
+        return naPotezi;
     }
 
     public void setNapotezi(Zetoni napotezi) {
-        this.napotezi = napotezi;
+        this.naPotezi = napotezi;
     }
 
     public void nakljucna() {
