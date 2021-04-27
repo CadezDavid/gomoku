@@ -1,5 +1,6 @@
 package logika;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 
 import splosno.Koordinati;
@@ -7,6 +8,8 @@ import splosno.Koordinati;
 public class Igra {
 
     // Plosca je 15x15 array z elementi iz razreda Polje
+    // Podseznami so zloženi v vrstice
+    // plosca[i][j] predstavlja presek i-te vrstice in j-tega stolpca
     private Polje[][] plosca;
     // napotezi oznacuje kdo je na potezi, beli ali crni
     private Zetoni napotezi;
@@ -91,48 +94,61 @@ public class Igra {
     public void setStanje(Stanje stanje) {
         this.stanje = stanje;
     }
-    
-    /*
-    public boolean preveriZmago(Polje plosca) {
-    	for (int i = 0; i < 15; i++) {
-    		for (int j = 0; j < 15; j++) {
-    			Polje zacetno = this.getPlosca()[i][j];
-    			if (zacetno.equals(Polje.PRAZNO)) {
-    				break;
-    			} else if (zacetno.equals(Polje.CRNI) {
-    				
-    			} else if (zacetno.equals(Polje.BELI)) {
-    				
-    			}
-    		}
-    	}
-    }
-    */
-    
-    /* 
-   public boolean preveriZmago(Polje plosca, Koordinati koordinati) {
-    	
-    }
-    */
-    
-    //funkcija preveri, ali je v vrstici pet v vrsto
-    //dopolniti jo bo treba, da 6 v vrsto ne šteje
-    public boolean preveriVrsto(Polje plosca, Koordinati koordinati) {
-    	int x = koordinati.getX();
-    	Polje[][] polje = this.getPlosca();
-    	int j = 0;
-    	while (j < 11) {
-    		Polje zacetno = polje[x][j];
-    		for (int i = j + 1; i < j + 5; i++) {
-    			if (zacetno != (polje[x][i])) {
-    				j++;
-    				break;
-    			}
-    		}
-    		return true;
-    	}
-    	return false;
-    	}
-    	
 
+    /*
+     * public boolean preveriZmago(Polje plosca) { for (int i = 0; i < 15; i++) {
+     * for (int j = 0; j < 15; j++) { Polje zacetno = this.getPlosca()[i][j]; if
+     * (zacetno.equals(Polje.PRAZNO)) { break; } else if (zacetno.equals(Polje.CRNI)
+     * {
+     * 
+     * } else if (zacetno.equals(Polje.BELI)) {
+     * 
+     * } } } }
+     */
+
+    /*
+     * public boolean preveriZmago(Polje plosca, Koordinati koordinati) {
+     * 
+     * }
+     */
+
+    // funkcija preveri, ali je v vrstici pet v vrsto
+    // dopolniti jo bo treba, da 6 v vrsto ne šteje
+    // public boolean preveriVrsto(Polje plosca, Koordinati koordinati) {
+    // int x = koordinati.getX();
+    // Polje[][] polje = this.getPlosca();
+    // int j = 0;
+    // while (j < 11) {
+    // Polje zacetno = polje[x][j];
+    // for_loop: for (int i = j + 1; i < j + 5; i++) {
+    // if (zacetno != (polje[x][i])) {
+    // j++;
+    // break for_loop;
+    // }
+    // }
+    // return true;
+    // }
+    // return false;
+    // }
+    public boolean preveriVrsto(Polje plosca, Koordinati koordinati) {
+        int x = koordinati.getX();
+        int y = koordinati.getY();
+
+        Polje[][] polje = this.getPlosca();
+        Polje trenutno = polje[x][y];
+        Polje[] iskani = new Polje[5];
+        for (int i = 0; i < 5; i++) {
+            iskani[i] = trenutno;
+        }
+
+        int s = 0;
+        for (int i = 0; i < 11; i++) {
+            if (Arrays.copyOfRange(polje[x], i, i + 5).equals(iskani)) {
+                s++;
+            }
+        }
+        // Če je s večji, bo bodisi daljši od 5 bodisi jih bo več
+        // Če pa je s manjši, jih pa ne bo
+        return s == 1;
+    }
 }
