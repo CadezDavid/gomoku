@@ -91,5 +91,48 @@ public class Igra {
     public void setStanje(Stanje stanje) {
         this.stanje = stanje;
     }
+    
+    /*
+    public boolean preveriZmago(Polje plosca) {
+    	for (int i = 0; i < 15; i++) {
+    		for (int j = 0; j < 15; j++) {
+    			Polje zacetno = this.getPlosca()[i][j];
+    			if (zacetno.equals(Polje.PRAZNO)) {
+    				break;
+    			} else if (zacetno.equals(Polje.CRNI) {
+    				
+    			} else if (zacetno.equals(Polje.BELI)) {
+    				
+    			}
+    		}
+    	}
+    }
+    */
+    
+    /* 
+   public boolean preveriZmago(Polje plosca, Koordinati koordinati) {
+    	
+    }
+    */
+    
+    //funkcija preveri, ali je v vrstici pet v vrsto
+    //dopolniti jo bo treba, da 6 v vrsto ne šteje
+    public boolean preveriVrsto(Polje plosca, Koordinati koordinati) {
+    	int x = koordinati.getX();
+    	Polje[][] polje = this.getPlosca();
+    	int j = 0;
+    	while (j < 11) {
+    		Polje zacetno = polje[x][j];
+    		for (int i = j + 1; i < j + 5; i++) {
+    			if (zacetno != (polje[x][i])) {
+    				j++;
+    				break;
+    			}
+    		}
+    		return true;
+    	}
+    	return false;
+    	}
+    	
 
 }
