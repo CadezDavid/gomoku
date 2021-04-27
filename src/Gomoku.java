@@ -18,7 +18,7 @@ public class Gomoku {
     private static BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
-        // Ustvari okno. svsvjnkccjkasdmkasdltesttest
+        // Ustvari okno.
         Okno okno = new Okno(800, 800);
         okno.pack();
         // okno.setVisible(true);
@@ -115,6 +115,7 @@ public class Gomoku {
             igralca.put(Zetoni.BELI, new Igralec("racunalnik", "milan"));
             return new Igra(igralca);
         }
+        System.out.println("A si prehlajen?");
         return ustvariNovoIgro(okno);
 
     }
