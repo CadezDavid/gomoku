@@ -112,24 +112,6 @@ public class Igra {
      * }
      */
 
-    // funkcija preveri, ali je v vrstici pet v vrsto
-    // dopolniti jo bo treba, da 6 v vrsto ne šteje
-    // public boolean preveriVrsto(Polje plosca, Koordinati koordinati) {
-    // int x = koordinati.getX();
-    // Polje[][] polje = this.getPlosca();
-    // int j = 0;
-    // while (j < 11) {
-    // Polje zacetno = polje[x][j];
-    // for_loop: for (int i = j + 1; i < j + 5; i++) {
-    // if (zacetno != (polje[x][i])) {
-    // j++;
-    // break for_loop;
-    // }
-    // }
-    // return true;
-    // }
-    // return false;
-    // }
     public boolean preveriVrsto(Polje plosca, Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
@@ -151,4 +133,35 @@ public class Igra {
         // Če pa je s manjši, jih pa ne bo
         return s == 1;
     }
+    
+    // ne najbolj elegantno
+    public boolean preveriStolpec(Polje plosca, Koordinati koordinati) {
+    	  int x = koordinati.getX();
+          int y = koordinati.getY();
+
+          Polje[][] polje = this.getPlosca();
+          Polje trenutno = polje[x][y];
+          Polje[] iskani = new Polje[5];
+          for (int i = 0; i < 5; i++) {
+              iskani[i] = trenutno;
+          }
+          
+          int s = 0;
+          for (int i = 0; i < 11; i++) {
+        	  Polje prvi = polje[i][y];
+        	  Polje drugi = polje[i + 1][y];
+        	  Polje tretji = polje[i + 2][y];
+        	  Polje cetrti = polje[i + 3][y];
+        	  Polje peti = polje[i + 4][y];
+        	  if (prvi.equals(trenutno) &&
+        		  drugi.equals(trenutno) &&
+        		  tretji.equals(trenutno) &&
+        		  cetrti.equals(trenutno) &&
+        		  peti.equals(trenutno)) {
+        		  s++;
+        	  }
+          }
+          return s == 1;
+    }
+    
 }
