@@ -13,7 +13,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import logika.Igra;
 import logika.Igralec;
 import logika.Vrsta;
 import logika.Zetoni;
