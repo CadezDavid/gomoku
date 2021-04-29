@@ -141,10 +141,6 @@ public class Igra {
 
           Polje[][] polje = this.getPlosca();
           Polje trenutno = polje[x][y];
-          Polje[] iskani = new Polje[5];
-          for (int i = 0; i < 5; i++) {
-              iskani[i] = trenutno;
-          }
           
           int s = 0;
           for (int i = 0; i < 11; i++) {
@@ -162,6 +158,65 @@ public class Igra {
         	  }
           }
           return s == 1;
+    }
+    
+    // preveri, ali je po diagonali "desno dol" kakšna peterica
+    // (on pregleda celo plosco, ne samo tistega dela, kamor smo vnesli zadnjo potezo)
+    public boolean preveriDiagonaloDD(Polje plosca, Koordinati koordinati) {
+    	  int x = koordinati.getX();
+          int y = koordinati.getY();
+
+          Polje[][] polje = this.getPlosca();
+          Polje trenutno = polje[x][y];
+          
+          int s = 0;
+          for (int i = 0; i < 11; i++) {
+        	  for (int j = 0; j < 11; j++) {
+        		  Polje prvi = polje[i][j];
+            	  Polje drugi = polje[i + 1][j + 1];
+            	  Polje tretji = polje[i + 2][j + 2];
+            	  Polje cetrti = polje[i + 3][j + 3];
+            	  Polje peti = polje[i + 4][j + 4];
+            	  if (prvi.equals(trenutno) &&
+                		  drugi.equals(trenutno) &&
+                		  tretji.equals(trenutno) &&
+                		  cetrti.equals(trenutno) &&
+                		  peti.equals(trenutno)) {
+                		  s++;
+                	  }
+                  }
+        	  }
+          return s == 1;
+          }
+    
+    // preveri, ali je po diagonali "desno gor" kakšna peterica
+    // (on pregleda celo plosco, ne samo tistega dela, kamor smo vnesli zadnjo potezo)
+    public boolean preveriDiagonaloDG(Polje plosca, Koordinati koordinati) {
+    	int x = koordinati.getX();
+        int y = koordinati.getY();
+
+        Polje[][] polje = this.getPlosca();
+        Polje trenutno = polje[x][y];
+        
+        int s = 0;
+        for (int i = 4; i < 15; i++) {
+      	  for (int j = 4; j < 15; j++) {
+      		  Polje prvi = polje[i][j];
+          	  Polje drugi = polje[i - 1][j + 1];
+          	  Polje tretji = polje[i - 2][j + 2];
+          	  Polje cetrti = polje[i - 3][j + 3];
+          	  Polje peti = polje[i - 4][j + 4];
+          	  if (prvi.equals(trenutno) &&
+              		  drugi.equals(trenutno) &&
+              		  tretji.equals(trenutno) &&
+              		  cetrti.equals(trenutno) &&
+              		  peti.equals(trenutno)) {
+              		  s++;
+              	  }
+                }
+      	  }
+        return s == 1;
+        }
     }
     
 }
