@@ -7,14 +7,8 @@ import splosno.Koordinati;
 
 public class Igra {
 
-    // Plosca je 15x15 array z elementi iz razreda Polje
-    // Podseznami so zloženi v vrstice
-    // plosca[i][j] predstavlja presek i-te vrstice in j-tega stolpca
     private Polje[][] plosca;
-    // napotezi oznacuje kdo je na potezi, beli ali crni
     private Zetoni naPotezi;
-    // igralca bosta predstavljena kot slovar, kjer je
-    // ključ zeton in vrednost igralec (z atributoma vrsta in ime)
     private EnumMap<Zetoni, Igralec> igralca;
 
     // Stanje igre; V_TEKU, NEODLOCENO, ZMAGA_BELI, ZMAGA_CRNI
