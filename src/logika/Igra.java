@@ -1,6 +1,5 @@
 package logika;
 
-import java.util.Arrays;
 import java.util.EnumMap;
 
 import splosno.Koordinati;
@@ -36,10 +35,9 @@ public class Igra {
         if (plosca[koordinati.getX()][koordinati.getY()] == Polje.PRAZNO) {
             plosca[koordinati.getX()][koordinati.getY()] = (naPotezi == Zetoni.BELI) ? Polje.BELI : Polje.CRNI;
          
-            boolean konec = preveriZmago(koordinati);
-            if (konec) {
+            if (preveriZmago(koordinati)) {
             	stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
-            	System.out.println("yay");
+            	System.out.println("Zmagal je " + stanje.toString());
             }
             setNapotezi(naPotezi == Zetoni.BELI ? Zetoni.CRNI : Zetoni.BELI);
             return true;
@@ -120,7 +118,7 @@ public class Igra {
            return (stevec + 1 == 5);
     }
 
-   
+
     public boolean preveriStolpec(Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();

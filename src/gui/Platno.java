@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 import logika.Polje;
+import logika.Stanje;
 import logika.Vrsta;
 import logika.Zetoni;
 import splosno.Koordinati;
@@ -88,6 +89,12 @@ public class Platno extends JPanel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (Vodja.getIgra() == null) {
+            return;
+        }
+        if (Vodja.getIgra().getStanje() != Stanje.V_TEKU) {
+            return;
+        }
         if (Vodja.kdoJeNaVrsti().equals(Vrsta.CLOVEK)) {
             int x = e.getX();
             int y = e.getY();
