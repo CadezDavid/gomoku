@@ -128,7 +128,7 @@ public class Igra {
         return s == 1;
     }
 
-    // ne najbolj elegantno
+   
     public boolean preveriStolpec(Polje plosca, Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
@@ -136,17 +136,16 @@ public class Igra {
         Polje[][] polje = this.getPlosca();
         Polje trenutno = polje[x][y];
         
-        int stevecGor = 0;
+        int stevec = 0;
         for (int i = 1; i <= x; i++) {
-        	if (polje[x - i][y].equals(trenutno)) stevecGor++;
+        	if (polje[x - i][y].equals(trenutno)) stevec++;
         	else break;
         }
-        int stevecDol = 0;
         for (int i = 1; i <= 14 - x; i++) {
-            if (polje[x + i][y].equals(trenutno)) stevecDol++;
+            if (polje[x + i][y].equals(trenutno)) stevec++;
             else break;
         }
-        return (stevecDol + stevecGor == 4);
+        return (stevec + 1 == 5);
     }
 
     // preveri, ali je po diagonali "desno dol" kakšna peterica
