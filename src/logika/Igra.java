@@ -136,17 +136,30 @@ public class Igra {
         Polje[][] polje = this.getPlosca();
         Polje trenutno = polje[x][y];
 
-        int s = 0;
+        int stevec = 0;
+        // štetje damo na čakanje, ko je 6 ali več istih barv po vrsti, 
+        // in ga spet začnemo, ko to vrsto prekine druga barva.
+        boolean cakanje = false;
         for (int i = 0; i < 11; i++) {
-            int zap = 0;
-            for (int j = 0; j < 5; j++) {
-                if (polje[i + j][y].equals(trenutno)) {
-                    zap++;
-                }
-                if (zap == 5) s++;
+            if (polje[i][y].equals(trenutno)) {
+            	if (cakanje) continue;
+            	else {
+            		stevec ++;
+            		if (stevec == 5) {
+            			if (i == 14 || (!polje[i + 1][y].equals(trenutno))) return true;
+            		}
+            		if (stevec == 6) {
+            			cakanje = true;
+            			stevec = 0;
+            		}
+            	}
+            } else {
+            	if (cakanje) {
+            		cakanje = false;
+            	}
             }
         }
-        return s == 1;
+        return false;
     }
 
     // preveri, ali je po diagonali "desno dol" kakšna peterica
