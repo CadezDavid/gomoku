@@ -137,26 +137,28 @@ public class Igra {
         Polje trenutno = polje[x][y];
 
         int stevec = 0;
-        // štetje damo na čakanje, ko je 6 ali več istih barv po vrsti, 
+        // štetje damo na čakanje, ko je 6 ali več istih barv po vrsti,
         // in ga spet začnemo, ko to vrsto prekine druga barva.
         boolean cakanje = false;
         for (int i = 0; i < 11; i++) {
             if (polje[i][y].equals(trenutno)) {
-            	if (cakanje) continue;
-            	else {
-            		stevec ++;
-            		if (stevec == 5) {
-            			if (i == 14 || (!polje[i + 1][y].equals(trenutno))) return true;
-            		}
-            		if (stevec == 6) {
-            			cakanje = true;
-            			stevec = 0;
-            		}
-            	}
+                if (cakanje)
+                    continue;
+                else {
+                    stevec++;
+                    if (stevec == 5) {
+                        if (i == 14 || (!polje[i + 1][y].equals(trenutno)))
+                            return true;
+                    }
+                    if (stevec == 6) {
+                        cakanje = true;
+                        stevec = 0;
+                    }
+                }
             } else {
-            	if (cakanje) {
-            		cakanje = false;
-            	}
+                if (cakanje) {
+                    cakanje = false;
+                }
             }
         }
         return false;
