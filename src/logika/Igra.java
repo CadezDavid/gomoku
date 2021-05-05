@@ -35,6 +35,12 @@ public class Igra {
         // Če je, tja postavi žeton igralca na potezi in vrne true
         if (plosca[koordinati.getX()][koordinati.getY()] == Polje.PRAZNO) {
             plosca[koordinati.getX()][koordinati.getY()] = (naPotezi == Zetoni.BELI) ? Polje.BELI : Polje.CRNI;
+         
+            boolean konec = preveriZmago(koordinati);
+            if (konec) {
+            	stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
+            	System.out.println("yay");
+            }
             setNapotezi(naPotezi == Zetoni.BELI ? Zetoni.CRNI : Zetoni.BELI);
             return true;
         } else
@@ -89,47 +95,33 @@ public class Igra {
         this.stanje = stanje;
     }
 
-    /*
-     * public boolean preveriZmago(Polje plosca) { for (int i = 0; i < 15; i++) {
-     * for (int j = 0; j < 15; j++) { Polje zacetno = this.getPlosca()[i][j]; if
-     * (zacetno.equals(Polje.PRAZNO)) { break; } else if (zacetno.equals(Polje.CRNI)
-     * {
-     * 
-     * } else if (zacetno.equals(Polje.BELI)) {
-     * 
-     * } } } }
-     */
+  
+    public boolean preveriZmago(Koordinati k) {
+    	return (preveriVrsto(k) || preveriStolpec(k) ||
+    			preveriDiagonaloDD(k) || preveriDiagonaloDG(k));
+    }
 
-    /*
-     * public boolean preveriZmago(Polje plosca, Koordinati koordinati) {
-     * 
-     * }
-     */
+    public boolean preveriVrsto(Koordinati koordinati) {
+    	   int x = koordinati.getX();
+           int y = koordinati.getY();
 
-    public boolean preveriVrsto(Polje plosca, Koordinati koordinati) {
-        int x = koordinati.getX();
-        int y = koordinati.getY();
-
-        Polje[][] polje = this.getPlosca();
-        Polje trenutno = polje[x][y];
-        Polje[] iskani = new Polje[5];
-        for (int i = 0; i < 5; i++) {
-            iskani[i] = trenutno;
-        }
-
-        int s = 0;
-        for (int i = 0; i < 11; i++) {
-            if (Arrays.copyOfRange(polje[x], i, i + 5).equals(iskani)) {
-                s++;
-            }
-        }
-        // Če je s večji, bo bodisi daljši od 5 bodisi jih bo več
-        // Če pa je s manjši, jih pa ne bo
-        return s == 1;
+           Polje[][] polje = this.getPlosca();
+           Polje trenutno = polje[x][y];
+           
+           int stevec = 0;
+           for (int i = 1; i <= y; i++) {
+           	if (polje[x][y - i].equals(trenutno)) stevec++;
+           	else break;
+           }
+           for (int i = 1; i <= 14 - y; i++) {
+               if (polje[x][y + i].equals(trenutno)) stevec++;
+               else break;
+           }
+           return (stevec + 1 == 5);
     }
 
    
-    public boolean preveriStolpec(Polje plosca, Koordinati koordinati) {
+    public boolean preveriStolpec(Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
 
@@ -148,57 +140,44 @@ public class Igra {
         return (stevec + 1 == 5);
     }
 
-    // preveri, ali je po diagonali "desno dol" kakšna peterica
-    // (on pregleda celo plosco, ne samo tistega dela, kamor smo vnesli zadnjo
-    // potezo)
-    public boolean preveriDiagonaloDD(Polje plosca, Koordinati koordinati) {
+    // preveri diagonalo "desno dol"
+    public boolean preveriDiagonaloDD(Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
 
         Polje[][] polje = this.getPlosca();
         Polje trenutno = polje[x][y];
 
-        int s = 0;
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 11; j++) {
-                Polje prvi = polje[i][j];
-                Polje drugi = polje[i + 1][j + 1];
-                Polje tretji = polje[i + 2][j + 2];
-                Polje cetrti = polje[i + 3][j + 3];
-                Polje peti = polje[i + 4][j + 4];
-                if (prvi.equals(trenutno) && drugi.equals(trenutno) && tretji.equals(trenutno)
-                        && cetrti.equals(trenutno) && peti.equals(trenutno)) {
-                    s++;
-                }
-            }
+        int stevec = 0;
+        for (int i = 1; i <= Math.min(x, y); i++) {
+        	if (polje[x - i][y - i].equals(trenutno)) stevec++;
+        	else break;
         }
-        return s == 1;
+        for (int i = 1; i <= Math.min(14 - x,  14 - y); i++) {
+            if (polje[x + i][y + i].equals(trenutno)) stevec++;
+            else break;
+        }
+        return stevec + 1== 5;
+     
     }
 
-    // preveri, ali je po diagonali "desno gor" kakšna peterica
-    // (on pregleda celo plosco, ne samo tistega dela, kamor smo vnesli zadnjo
-    // potezo)
-    public boolean preveriDiagonaloDG(Polje plosca, Koordinati koordinati) {
-        int x = koordinati.getX();
+    // preveri diagonalo "desno gor"
+    public boolean preveriDiagonaloDG(Koordinati koordinati) {
+    	int x = koordinati.getX();
         int y = koordinati.getY();
 
         Polje[][] polje = this.getPlosca();
         Polje trenutno = polje[x][y];
 
-        int s = 0;
-        for (int i = 4; i < 15; i++) {
-            for (int j = 4; j < 15; j++) {
-                Polje prvi = polje[i][j];
-                Polje drugi = polje[i - 1][j + 1];
-                Polje tretji = polje[i - 2][j + 2];
-                Polje cetrti = polje[i - 3][j + 3];
-                Polje peti = polje[i - 4][j + 4];
-                if (prvi.equals(trenutno) && drugi.equals(trenutno) && tretji.equals(trenutno)
-                        && cetrti.equals(trenutno) && peti.equals(trenutno)) {
-                    s++;
-                }
-            }
+        int stevec = 0;
+        for (int i = 1; i <= Math.min(14 - x, y); i++) {
+        	if (polje[x + i][y - i].equals(trenutno)) stevec++;
+        	else break;
         }
-        return s == 1;
+        for (int i = 1; i <= Math.min(x, 14 - y); i++) {
+            if (polje[x - i][y + i].equals(trenutno)) stevec++;
+            else break;
+        }
+        return stevec + 1== 5;
     }
 }
