@@ -7,11 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 import logika.Igralec;
 import logika.Vrsta;
@@ -24,6 +27,8 @@ public class Okno extends JFrame implements ActionListener {
 
     private JMenuItem igraClovekClovek;
     private JMenuItem igraRacunalnikClovek;
+    private JPanel orodjarna;
+    private JPanel glavnaPlosca;
 
     private JLabel status;
 
@@ -33,9 +38,13 @@ public class Okno extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
 
+        glavnaPlosca = new JPanel();
+        glavnaPlosca.setLayout(new BoxLayout(glavnaPlosca, BoxLayout.Y_AXIS));
+        this.add(glavnaPlosca);
+        
         // platno
         platno = new Platno();
-        add(platno);
+        glavnaPlosca.add(platno);
 
         // menu
         JMenuBar menu_bar = new JMenuBar();
@@ -61,6 +70,17 @@ public class Okno extends JFrame implements ActionListener {
         getContentPane().add(status, status_layout);
 
         status.setText("Izberite igro.");
+        glavnaPlosca.add(status);
+        
+        //////////////////////////////////////////////////////////////////////////////////////
+        // vrstica za začeti novo igro
+        orodjarna = new JPanel();
+        JButton gumbZaNovoIgro = new JButton("Začni znova.");
+        gumbZaNovoIgro.addActionListener(this);
+        orodjarna.add(gumbZaNovoIgro);
+        glavnaPlosca.add(orodjarna);
+        orodjarna.setVisible(false);
+        ////////////////////////////////////////////////////////////////////////////////////////
     }
 
     @Override
@@ -84,12 +104,15 @@ public class Okno extends JFrame implements ActionListener {
                 break;
             case ZMAGA_BELI:
                 status.setText("Zmagal je beli.");
+                orodjarna.setVisible(true);
                 break;
             case ZMAGA_CRNI:
                 status.setText("Zmagal je črni.");
+                orodjarna.setVisible(true);
                 break;
             case NEODLOCENO:
                 status.setText("Neodločeno.");
+                orodjarna.setVisible(true);
                 break;
         }
         platno.repaint();
