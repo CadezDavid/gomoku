@@ -29,6 +29,7 @@ public class Okno extends JFrame implements ActionListener {
     private JMenuItem igraRacunalnikClovek;
     private JPanel orodjarna;
     private JPanel glavnaPlosca;
+    private JButton gumbZaNovoIgro;
 
     private JLabel status;
 
@@ -75,7 +76,7 @@ public class Okno extends JFrame implements ActionListener {
         //////////////////////////////////////////////////////////////////////////////////////
         // vrstica za začeti novo igro
         orodjarna = new JPanel();
-        JButton gumbZaNovoIgro = new JButton("Začni znova.");
+        gumbZaNovoIgro = new JButton("Začni znova.");
         gumbZaNovoIgro.addActionListener(this);
         orodjarna.add(gumbZaNovoIgro);
         glavnaPlosca.add(orodjarna);
@@ -92,6 +93,8 @@ public class Okno extends JFrame implements ActionListener {
         } else if (e.getSource() == igraClovekClovek) {
             igralca.put(Zetoni.BELI, new Igralec(Vrsta.CLOVEK, "marcel"));
             igralca.put(Zetoni.CRNI, new Igralec(Vrsta.CLOVEK, "ciril"));
+        } else if (e.getSource() == gumbZaNovoIgro) {
+        	igralca = Vodja.getIgra().getIgralca();
         }
         Vodja.ustvariNovoIgro(igralca);
     }
