@@ -23,7 +23,7 @@ public class Platno extends JPanel implements MouseListener {
 
     public Platno() {
         setPreferredSize(getPreferredSize());
-        setBackground(Color.GREEN);
+        setBackground(Color.PINK);
         addMouseListener(this);
     }
 
@@ -83,7 +83,7 @@ public class Platno extends JPanel implements MouseListener {
         }
 
         g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
-        g2.fillOval((int) i, (int) j, (int) w, (int) w);
+        g2.fillOval((int) (i + w/4), (int) (j + w/4), (int) w / 2, (int) w / 2);
     }
 
     @Override
