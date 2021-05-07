@@ -97,6 +97,7 @@ public class Okno extends JFrame implements ActionListener {
         	igralca = Vodja.getIgra().getIgralca();
         }
         Vodja.ustvariNovoIgro(igralca);
+        
     }
 
     public void osveziGUI() {
