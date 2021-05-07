@@ -53,7 +53,7 @@ public class Okno extends JFrame implements ActionListener {
 
         // statusna vrstica
         status = new JLabel();
-        status.setFont(new Font("Source Code Pro", Font.BOLD, 18));
+        status.setFont(new Font("Fira Code", Font.BOLD, 18));
         GridBagConstraints status_layout = new GridBagConstraints();
         status_layout.gridx = 0;
         status_layout.gridy = 1;
