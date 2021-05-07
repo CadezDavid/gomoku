@@ -9,8 +9,6 @@ public class Igra {
     private Polje[][] plosca;
     private Zetoni naPotezi;
     private EnumMap<Zetoni, Igralec> igralca;
-
-    // Stanje igre; V_TEKU, NEODLOCENO, ZMAGA_BELI, ZMAGA_CRNI
     private Stanje stanje;
 
     public Igra(EnumMap<Zetoni, Igralec> igralca) {
@@ -34,10 +32,10 @@ public class Igra {
         // Če je, tja postavi žeton igralca na potezi in vrne true
         if (plosca[koordinati.getX()][koordinati.getY()] == Polje.PRAZNO) {
             plosca[koordinati.getX()][koordinati.getY()] = (naPotezi == Zetoni.BELI) ? Polje.BELI : Polje.CRNI;
-         
+
             if (preveriZmago(koordinati)) {
-            	stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
-            	System.out.println("Zmagal je " + stanje.toString());
+                stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
+                System.out.println("Zmagal je " + stanje.toString());
             }
             setNapotezi(naPotezi == Zetoni.BELI ? Zetoni.CRNI : Zetoni.BELI);
             return true;
@@ -69,6 +67,22 @@ public class Igra {
         this.odigraj(koordinati);
     }
 
+    public Igra clone(Igra igra) {
+        Igra kopija = new Igra(igra.getIgralca());
+        kopija.setNapotezi(igra.getNapotezi());
+        kopija.setStanje(igra.getStanje());
+
+        Polje[][] plosca = new Polje[15][15];
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                plosca[i][j] = igra.getPlosca()[i][j];
+            }
+        }
+        kopija.setPlosca(plosca);
+
+        return kopija;
+    }
+
     public Polje[][] getPlosca() {
         return plosca;
     }
@@ -93,31 +107,32 @@ public class Igra {
         this.stanje = stanje;
     }
 
-  
     public boolean preveriZmago(Koordinati k) {
-    	return (preveriVrsto(k) || preveriStolpec(k) ||
-    			preveriDiagonaloDD(k) || preveriDiagonaloDG(k));
+        return (preveriVrsto(k) || preveriStolpec(k) || preveriDiagonaloDD(k) || preveriDiagonaloDG(k));
     }
 
     public boolean preveriVrsto(Koordinati koordinati) {
-    	   int x = koordinati.getX();
-           int y = koordinati.getY();
+        int x = koordinati.getX();
+        int y = koordinati.getY();
 
-           Polje[][] polje = this.getPlosca();
-           Polje trenutno = polje[x][y];
-           
-           int stevec = 0;
-           for (int i = 1; i <= y; i++) {
-           	if (polje[x][y - i].equals(trenutno)) stevec++;
-           	else break;
-           }
-           for (int i = 1; i <= 14 - y; i++) {
-               if (polje[x][y + i].equals(trenutno)) stevec++;
-               else break;
-           }
-           return (stevec + 1 == 5);
+        Polje[][] polje = this.getPlosca();
+        Polje trenutno = polje[x][y];
+
+        int stevec = 0;
+        for (int i = 1; i <= y; i++) {
+            if (polje[x][y - i].equals(trenutno))
+                stevec++;
+            else
+                break;
+        }
+        for (int i = 1; i <= 14 - y; i++) {
+            if (polje[x][y + i].equals(trenutno))
+                stevec++;
+            else
+                break;
+        }
+        return (stevec + 1 == 5);
     }
-
 
     public boolean preveriStolpec(Koordinati koordinati) {
         int x = koordinati.getX();
@@ -125,15 +140,19 @@ public class Igra {
 
         Polje[][] polje = this.getPlosca();
         Polje trenutno = polje[x][y];
-        
+
         int stevec = 0;
         for (int i = 1; i <= x; i++) {
-        	if (polje[x - i][y].equals(trenutno)) stevec++;
-        	else break;
+            if (polje[x - i][y].equals(trenutno))
+                stevec++;
+            else
+                break;
         }
         for (int i = 1; i <= 14 - x; i++) {
-            if (polje[x + i][y].equals(trenutno)) stevec++;
-            else break;
+            if (polje[x + i][y].equals(trenutno))
+                stevec++;
+            else
+                break;
         }
         return (stevec + 1 == 5);
     }
@@ -148,20 +167,24 @@ public class Igra {
 
         int stevec = 0;
         for (int i = 1; i <= Math.min(x, y); i++) {
-        	if (polje[x - i][y - i].equals(trenutno)) stevec++;
-        	else break;
+            if (polje[x - i][y - i].equals(trenutno))
+                stevec++;
+            else
+                break;
         }
-        for (int i = 1; i <= Math.min(14 - x,  14 - y); i++) {
-            if (polje[x + i][y + i].equals(trenutno)) stevec++;
-            else break;
+        for (int i = 1; i <= Math.min(14 - x, 14 - y); i++) {
+            if (polje[x + i][y + i].equals(trenutno))
+                stevec++;
+            else
+                break;
         }
-        return stevec + 1== 5;
-     
+        return stevec + 1 == 5;
+
     }
 
     // preveri diagonalo "desno gor"
     public boolean preveriDiagonaloDG(Koordinati koordinati) {
-    	int x = koordinati.getX();
+        int x = koordinati.getX();
         int y = koordinati.getY();
 
         Polje[][] polje = this.getPlosca();
@@ -169,13 +192,17 @@ public class Igra {
 
         int stevec = 0;
         for (int i = 1; i <= Math.min(14 - x, y); i++) {
-        	if (polje[x + i][y - i].equals(trenutno)) stevec++;
-        	else break;
+            if (polje[x + i][y - i].equals(trenutno))
+                stevec++;
+            else
+                break;
         }
         for (int i = 1; i <= Math.min(x, 14 - y); i++) {
-            if (polje[x - i][y + i].equals(trenutno)) stevec++;
-            else break;
+            if (polje[x - i][y + i].equals(trenutno))
+                stevec++;
+            else
+                break;
         }
-        return stevec + 1== 5;
+        return stevec + 1 == 5;
     }
 }
