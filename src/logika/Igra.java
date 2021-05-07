@@ -117,7 +117,7 @@ public class Igra {
                if (polje[x][y + i].equals(trenutno)) stevec++;
                else break;
            }
-           return (stevec + 1 == 5);
+           return (stevec + 1 >= 5);
     }
 
    
@@ -137,7 +137,7 @@ public class Igra {
             if (polje[x + i][y].equals(trenutno)) stevec++;
             else break;
         }
-        return (stevec + 1 == 5);
+        return (stevec + 1 >= 5);
     }
 
     // preveri diagonalo "desno dol"
@@ -157,7 +157,7 @@ public class Igra {
             if (polje[x + i][y + i].equals(trenutno)) stevec++;
             else break;
         }
-        return stevec + 1== 5;
+        return stevec + 1 >= 5;
      
     }
 
@@ -178,6 +178,6 @@ public class Igra {
             if (polje[x - i][y + i].equals(trenutno)) stevec++;
             else break;
         }
-        return stevec + 1== 5;
+        return stevec + 1 >= 5;
     }
 }
