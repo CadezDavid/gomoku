@@ -1,17 +1,23 @@
 package vodja;
 
 import java.util.EnumMap;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.SwingWorker;
 
 import gui.Okno;
+import inteligenca.AlphaBeta;
 import logika.Igra;
 import logika.Igralec;
 import logika.Vrsta;
 import logika.Zetoni;
+import splosno.Koordinati;
 
 public class Vodja {
 
     private static Okno okno;
     private static Igra igra;
+    private static AlphaBeta racunalnik = new AlphaBeta(10);
 
     public static void ustvariNovoIgro(EnumMap<Zetoni, Igralec> igralca) {
         igra = new Igra(igralca);
@@ -24,8 +30,7 @@ public class Vodja {
             case V_TEKU:
                 switch (kdoJeNaVrsti()) {
                     case RACUNALNIK:
-                        igra.nakljucna();
-                        okno.osveziGUI();
+                        igrajRacunalnikovoPotezo();
                         break;
                     case CLOVEK:
                         break;
@@ -34,6 +39,34 @@ public class Vodja {
             case ZMAGA_CRNI:
             case NEODLOCENO:
         }
+    }
+
+    public static void igrajRacunalnikovoPotezo() {
+        SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void>() {
+            @Override
+            protected Koordinati doInBackground() {
+                Koordinati poteza = racunalnik.izberiPotezo(igra);
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (Exception e) {
+                }
+                ;
+                return poteza;
+            }
+
+            @Override
+            protected void done() {
+                Koordinati poteza = null;
+                try {
+                    poteza = get();
+                } catch (Exception e) {
+                }
+                ;
+                igra.odigraj(poteza);
+                cikel();
+            }
+        };
+        worker.execute();
     }
 
     public static Igra getIgra() {
