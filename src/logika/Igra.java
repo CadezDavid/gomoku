@@ -36,8 +36,7 @@ public class Igra {
         if (plosca[koordinati.getX()][koordinati.getY()] == Polje.PRAZNO) {
             plosca[koordinati.getX()][koordinati.getY()] = (naPotezi == Zetoni.BELI) ? Polje.BELI : Polje.CRNI;
          
-            boolean konec = preveriZmago(koordinati);
-            if (konec) {
+            if (preveriZmago(koordinati)) {
             	stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
             	System.out.println("yay");
             }
