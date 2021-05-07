@@ -1,6 +1,8 @@
 package logika;
 
 import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import splosno.Koordinati;
 
@@ -32,9 +34,9 @@ public class Igra {
         // Če je, tja postavi žeton igralca na potezi in vrne true
         if (plosca[koordinati.getX()][koordinati.getY()] == Polje.PRAZNO) {
             plosca[koordinati.getX()][koordinati.getY()] = (naPotezi == Zetoni.BELI) ? Polje.BELI : Polje.CRNI;
-        if (preveriZmago(koordinati)) {
-            stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
-            System.out.println("Zmagal je " + stanje.toString());
+            if (preveriZmago(koordinati)) {
+                stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
+                System.out.println("Zmagal je " + stanje.toString());
             }
             setNapotezi(naPotezi == Zetoni.BELI ? Zetoni.CRNI : Zetoni.BELI);
             return true;
@@ -82,6 +84,18 @@ public class Igra {
         return kopija;
     }
 
+    public Set<Koordinati> moznePoteze() {
+        Set<Koordinati> moznePoteze = new HashSet<Koordinati>();
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (getPlosca()[i][j] == Polje.PRAZNO) {
+                    moznePoteze.add(new Koordinati(i, j));
+                }
+            }
+        }
+        return moznePoteze;
+    }
+
     public Polje[][] getPlosca() {
         return plosca;
     }
@@ -114,19 +128,23 @@ public class Igra {
         int x = koordinati.getX();
         int y = koordinati.getY();
 
-           Polje[][] polje = this.getPlosca();
-           Polje trenutno = polje[x][y];
-           
-           int stevec = 0;
-           for (int i = 1; i <= y; i++) {
-           	if (polje[x][y - i].equals(trenutno)) stevec++;
-           	else break;
-           }
-           for (int i = 1; i <= 14 - y; i++) {
-               if (polje[x][y + i].equals(trenutno)) stevec++;
-               else break;
-           }
-           return (stevec + 1 >= 5);
+        Polje[][] polje = this.getPlosca();
+        Polje trenutno = polje[x][y];
+
+        int stevec = 0;
+        for (int i = 1; i <= y; i++) {
+            if (polje[x][y - i].equals(trenutno))
+                stevec++;
+            else
+                break;
+        }
+        for (int i = 1; i <= 14 - y; i++) {
+            if (polje[x][y + i].equals(trenutno))
+                stevec++;
+            else
+                break;
+        }
+        return (stevec + 1 >= 5);
     }
 
     public boolean preveriStolpec(Koordinati koordinati) {
