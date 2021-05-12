@@ -117,7 +117,7 @@ public class Okno extends JFrame implements ActionListener {
     public void osveziGUI() {
         switch (Vodja.getIgra().getStanje()) {
             case V_TEKU:
-                String x = Vodja.getIgra().getNapotezi().equals(Zetoni.BELI) ? "beli" : "črni";
+                String x = Vodja.getIgra().getNaPotezi().equals(Zetoni.BELI) ? "beli" : "črni";
                 status.setText("Na potezi je " + x + ".");
                 break;
             case ZMAGA_BELI:
