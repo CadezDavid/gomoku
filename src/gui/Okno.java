@@ -27,6 +27,8 @@ public class Okno extends JFrame implements ActionListener {
 
     private JMenuItem igraClovekClovek;
     private JMenuItem igraRacunalnikClovek;
+    // private JMenuItem miniMax;
+    // private JMenuItem alphaBeta;
     private JPanel orodjarna;
     private JPanel glavnaPlosca;
     private JButton gumbZaNovoIgro;
@@ -61,6 +63,18 @@ public class Okno extends JFrame implements ActionListener {
         igra_menu.add(igraRacunalnikClovek);
         igraRacunalnikClovek.addActionListener(this);
 
+        // // tip racunalnika
+        // JMenu inteligenca = new JMenu("Inteligenca");
+        // menu_bar.add(inteligenca);
+
+        // miniMax = new JMenuItem("MiniMax");
+        // inteligenca.add(miniMax);
+        // miniMax.addActionListener(this);
+
+        // alphaBeta = new JMenuItem("AlphaBeta");
+        // inteligenca.add(alphaBeta);
+        // alphaBeta.addActionListener(this);
+
         // statusna vrstica
         status = new JLabel();
         status.setFont(new Font("Fira Code", Font.BOLD, 18));
@@ -73,7 +87,7 @@ public class Okno extends JFrame implements ActionListener {
         status.setText("Izberite igro.");
         glavnaPlosca.add(status);
         
-        //////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////
         // vrstica za začeti novo igro
         orodjarna = new JPanel();
         gumbZaNovoIgro = new JButton("Začni znova.");
@@ -81,7 +95,7 @@ public class Okno extends JFrame implements ActionListener {
         orodjarna.add(gumbZaNovoIgro);
         glavnaPlosca.add(orodjarna);
         orodjarna.setVisible(false);
-        ////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////
     }
 
     @Override
