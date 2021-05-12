@@ -2,16 +2,18 @@ package logika;
 
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import splosno.Koordinati;
 
 public class Igra {
-
-    private Polje[][] plosca;
     private Zetoni naPotezi;
     private EnumMap<Zetoni, Igralec> igralca;
     private Stanje stanje;
+    private Polje[][] plosca;
+    private List<Koordinati> poteze;
 
     public Igra(EnumMap<Zetoni, Igralec> igralca) {
         // Zacne crni
@@ -27,6 +29,7 @@ public class Igra {
             }
         }
         setIgralca(igralca);
+        poteze = new LinkedList<Koordinati>();
     }
 
     public boolean odigraj(Koordinati koordinati) {
@@ -38,18 +41,11 @@ public class Igra {
                 stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
                 System.out.println("Zmagal je " + stanje.toString());
             }
-            setNapotezi(naPotezi == Zetoni.BELI ? Zetoni.CRNI : Zetoni.BELI);
+            setNaPotezi(naPotezi == Zetoni.BELI ? Zetoni.CRNI : Zetoni.BELI);
+            poteze.add(koordinati);
             return true;
         } else
             return false;
-    }
-
-    public Zetoni getNapotezi() {
-        return naPotezi;
-    }
-
-    public void setNapotezi(Zetoni napotezi) {
-        this.naPotezi = napotezi;
     }
 
     public void nakljucna() {
@@ -68,15 +64,15 @@ public class Igra {
         this.odigraj(koordinati);
     }
 
-    public Igra clone(Igra igra) {
-        Igra kopija = new Igra(igra.getIgralca());
-        kopija.setNapotezi(igra.getNapotezi());
-        kopija.setStanje(igra.getStanje());
+    public Igra clone() {
+        Igra kopija = new Igra(this.getIgralca());
+        kopija.setNaPotezi(this.getNaPotezi());
+        kopija.setStanje(this.getStanje());
 
         Polje[][] plosca = new Polje[15][15];
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                plosca[i][j] = igra.getPlosca()[i][j];
+                plosca[i][j] = this.getPlosca()[i][j];
             }
         }
         kopija.setPlosca(plosca);
@@ -218,4 +214,20 @@ public class Igra {
         return stevec + 1 >= 5;
 
     }
+
+	public Zetoni getNaPotezi() {
+		return naPotezi;
+	}
+
+	public void setNaPotezi(Zetoni naPotezi) {
+		this.naPotezi = naPotezi;
+	}
+
+	public List<Koordinati> getPoteze() {
+		return poteze;
+	}
+
+	public void setPoteze(List<Koordinati> poteze) {
+		this.poteze = poteze;
+	}
 }
