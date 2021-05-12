@@ -1,7 +1,7 @@
 package vodja;
 
 import java.util.EnumMap;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 import javax.swing.SwingWorker;
 
@@ -17,7 +17,7 @@ public class Vodja {
 
     private static Okno okno;
     private static Igra igra;
-    private static AlphaBeta racunalnik = new AlphaBeta(10);
+    private static AlphaBeta racunalnik = new AlphaBeta(3);
 
     public static void ustvariNovoIgro(EnumMap<Zetoni, Igralec> igralca) {
         igra = new Igra(igralca);
@@ -45,13 +45,16 @@ public class Vodja {
         SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void>() {
             @Override
             protected Koordinati doInBackground() {
-                Koordinati poteza = racunalnik.izberiPotezo(igra);
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (Exception e) {
+                Map<Koordinati, Integer> poteze = racunalnik.izberiPotezo(igra, 1, igra.getNapotezi());
+                Koordinati kandidat = new Koordinati(1, 2);
+                int ocenap = Integer.MIN_VALUE;
+                for (Koordinati p : poteze.keySet()) {
+                    if (ocenap < poteze.get(p)) {
+                        kandidat = p;
+                        ocenap = poteze.get(p);
+                    }
                 }
-                ;
-                return poteza;
+                return kandidat;
             }
 
             @Override
