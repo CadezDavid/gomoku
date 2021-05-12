@@ -1,12 +1,12 @@
 package vodja;
 
 import java.util.EnumMap;
-import java.util.Map;
+import java.util.LinkedList;
 
 import javax.swing.SwingWorker;
 
 import gui.Okno;
-import inteligenca.AlphaBeta;
+import inteligenca.Inteligenca;
 import logika.Igra;
 import logika.Igralec;
 import logika.Vrsta;
@@ -17,7 +17,7 @@ public class Vodja {
 
     private static Okno okno;
     private static Igra igra;
-    private static AlphaBeta racunalnik = new AlphaBeta(3);
+    private static Inteligenca racunalnik = new Inteligenca(5);
 
     public static void ustvariNovoIgro(EnumMap<Zetoni, Igralec> igralca) {
         igra = new Igra(igralca);
@@ -30,7 +30,13 @@ public class Vodja {
             case V_TEKU:
                 switch (kdoJeNaVrsti()) {
                     case RACUNALNIK:
-                        igrajRacunalnikovoPotezo();
+                        if (igra.getPoteze().equals(new LinkedList<Koordinati>())) {
+                            igra.odigraj(new Koordinati(7, 7));
+                        } else if (igra.getPoteze().size() < 10) {
+                            igra.odigraj(new Inteligenca(2).izberiPotezo(igra));
+                        } else {
+                            igrajRacunalnikovoPotezo();
+                        }
                         break;
                     case CLOVEK:
                         break;
@@ -45,16 +51,7 @@ public class Vodja {
         SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void>() {
             @Override
             protected Koordinati doInBackground() {
-                Map<Koordinati, Integer> poteze = racunalnik.izberiPotezo(igra, 1, igra.getNapotezi());
-                Koordinati kandidat = new Koordinati(1, 2);
-                int ocenap = Integer.MIN_VALUE;
-                for (Koordinati p : poteze.keySet()) {
-                    if (ocenap < poteze.get(p)) {
-                        kandidat = p;
-                        ocenap = poteze.get(p);
-                    }
-                }
-                return kandidat;
+                return racunalnik.izberiPotezo(igra);
             }
 
             @Override
@@ -89,6 +86,6 @@ public class Vodja {
     }
 
     public static Vrsta kdoJeNaVrsti() {
-        return igra.getIgralca().get(igra.getNapotezi()).getVrsta();
+        return igra.getIgralca().get(igra.getNaPotezi()).getVrsta();
     }
 }
