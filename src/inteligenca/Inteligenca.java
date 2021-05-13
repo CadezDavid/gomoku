@@ -1,7 +1,6 @@
 package inteligenca;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import logika.Igra;
@@ -114,16 +113,20 @@ class OcenjenePoteze {
     }
 
     public Koordinati getRandom() {
-        int size = poteze.size();
-        int x = new Random().nextInt(size);
-        int i = 0;
         for (Koordinati k : poteze) {
-            if (i == x) {
-                return k;
-            } else {
-                i++;
-            }
+            return k;
         }
+        // return getRandom();
+        // int size = poteze.size();
+        // int x = new Random().nextInt(size);
+        // int i = 0;
+        // for (Koordinati k : poteze) {
+        //     if (i == x) {
+        //         return k;
+        //     } else {
+        //         i++;
+        //     }
+        // }
         return getRandom();
     }
 
