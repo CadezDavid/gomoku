@@ -5,7 +5,7 @@ import logika.Zetoni;
 
 public class Groznje {
     public static int groznje(Polje[][] plosca, Zetoni naVrsti) {
-        return stiri(plosca, naVrsti) + sStiri(plosca, naVrsti) + tri(plosca, naVrsti) + bTri(plosca, naVrsti);
+        return stiri(plosca, naVrsti) + sStiri(plosca, naVrsti) + tri(plosca, naVrsti) + bTri(plosca, naVrsti) + pet(plosca, naVrsti);
     }
 
     // nevarnost: 5 - ze izgubljeno, 4 - ena poteza manjka, 3 - dve potezi, ...
@@ -13,6 +13,12 @@ public class Groznje {
     private static int sStiri(Polje[][] plosca, Zetoni naVrsti) {
         Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
         Polje[] vzorec = { Polje.PRAZNO, p, p, p, p, Polje.PRAZNO };
+        return (int) Math.pow(6, poisciVzorec(plosca, vzorec));
+    }
+
+    private static int pet(Polje[][] plosca, Zetoni naVrsti) {
+        Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
+        Polje[] vzorec = { Polje.PRAZNO, p, p, p, p, p, Polje.PRAZNO };
         return (int) Math.pow(5, poisciVzorec(plosca, vzorec));
     }
 
