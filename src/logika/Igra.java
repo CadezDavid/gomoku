@@ -84,11 +84,27 @@ public class Igra {
         Set<Koordinati> moznePoteze = new HashSet<Koordinati>();
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                if (getPlosca()[i][j] == Polje.PRAZNO) {
-                    moznePoteze.add(new Koordinati(i, j));
+                if (getPlosca()[i][j] != Polje.PRAZNO) {
+                    for (int di = -2; di < 3; di++) {
+                        for (int dj = -2; dj < 3; dj++) {
+                            if (0 <= i + di && i + di < 15 && 0 <= j + dj && j + dj < 15
+                                    && getPlosca()[i + di][j + dj] == Polje.PRAZNO) {
+                                moznePoteze.add(new Koordinati(i + di, j + dj));
+                            }
+                        }
+                    }
                 }
             }
         }
+
+        // Set<Koordinati> moznePoteze = new HashSet<Koordinati>();
+        // for (int i = 0; i < 15; i++) {
+        // for (int j = 0; j < 15; j++) {
+        // if (getPlosca()[i][j] == Polje.PRAZNO) {
+        // moznePoteze.add(new Koordinati(i, j));
+        // }
+        // }
+        // }
         return moznePoteze;
     }
 
@@ -215,19 +231,19 @@ public class Igra {
 
     }
 
-	public Zetoni getNaPotezi() {
-		return naPotezi;
-	}
+    public Zetoni getNaPotezi() {
+        return naPotezi;
+    }
 
-	public void setNaPotezi(Zetoni naPotezi) {
-		this.naPotezi = naPotezi;
-	}
+    public void setNaPotezi(Zetoni naPotezi) {
+        this.naPotezi = naPotezi;
+    }
 
-	public List<Koordinati> getPoteze() {
-		return poteze;
-	}
+    public List<Koordinati> getPoteze() {
+        return poteze;
+    }
 
-	public void setPoteze(List<Koordinati> poteze) {
-		this.poteze = poteze;
-	}
+    public void setPoteze(List<Koordinati> poteze) {
+        this.poteze = poteze;
+    }
 }
