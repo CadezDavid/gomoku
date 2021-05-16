@@ -39,7 +39,11 @@ public class Igra {
             plosca[koordinati.getX()][koordinati.getY()] = (naPotezi == Zetoni.BELI) ? Polje.BELI : Polje.CRNI;
             if (preveriZmago(koordinati)) {
                 stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
-                System.out.println("Zmagal je " + stanje.toString());
+                System.out.println("Zmagal je " + stanje.toString() + ".");
+            }
+            if (preveriNeodloceno()) {
+            	stanje = Stanje.NEODLOCENO;
+            	System.out.println("Neodločeno!");
             }
             setNaPotezi(naPotezi == Zetoni.BELI ? Zetoni.CRNI : Zetoni.BELI);
             poteze.add(koordinati);
@@ -132,6 +136,16 @@ public class Igra {
         this.stanje = stanje;
     }
 
+    public boolean preveriNeodloceno() {
+    	Polje[][] polje = this.getPlosca();
+    	for (int i = 0; i < 15; i++) {
+    		for (int j = 0; j < 15; j++) {
+    			if (polje[i][j].equals(Polje.PRAZNO)) return false;
+    		}
+    	}
+    	return true;
+    }
+    
     public boolean preveriZmago(Koordinati k) {
         return (preveriVrsto(k) || preveriStolpec(k) || preveriDiagonaloDD(k) || preveriDiagonaloDG(k));
     }
