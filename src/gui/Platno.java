@@ -18,17 +18,17 @@ import logika.Zetoni;
 import splosno.Koordinati;
 import vodja.Vodja;
 
+@SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener {
 
     private final static double LINE_WIDTH = 0.05;
     private final static double PADDING = 0.05;
+    private static Color ozadje = new Color(255, 218, 179);
     
-    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-  
-    
+
     public Platno() {
         setPreferredSize(getPreferredSize());
-        setBackground(Color.PINK);
+        setBackground(ozadje);
         addMouseListener(this);
     }
 
@@ -37,21 +37,27 @@ public class Platno extends JPanel implements MouseListener {
     }
 
     private double squareWidth() {
-        return Math.min(getWidth(), getHeight()) / 15;
+        return (Math.min(getWidth(), getHeight()) - (Math.min(getWidth(), getHeight()) * PADDING)) / 15;
     }
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D) g;
+        double sirina = getWidth();
+        double polovicaS = (sirina - (sirina * PADDING))/2;
+        double visina = getHeight();
+        double polovicaV = (visina - (visina * PADDING))/2;
+        double polovica = Math.min(polovicaS, polovicaV);
+        double s = (sirina / 2) - polovica;
+        double v = (visina / 2 ) - polovica;
         double w = squareWidth();
 
         // narišemo črte
         g2.setColor(Color.BLACK);
         g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
         for (int i = 0; i < 16; i++) {
-            g2.drawLine((int) (i * w), (int) (0), (int) (i * w), (int) (15 * w));
-            g2.drawLine((int) (0), (int) (i * w), (int) (15 * w), (int) (i * w));
+            g2.drawLine((int) ((i * w) + s), (int) (v), (int) (i * w + s), (int) (15 * w + v));
+            g2.drawLine((int) (s), (int) ((i * w) + v), (int) (15 * w+ s) , (int) (i * w+ v));
         }
 
         if (Vodja.getIgra() != null) {
@@ -75,12 +81,21 @@ public class Platno extends JPanel implements MouseListener {
     }
 
     public void paintSquare(Graphics2D g2, Zetoni zeton, Koordinati koordinati) {
+        double sirina = getWidth();
+        double polovicaS = (sirina - (sirina * PADDING))/2;
+        double visina = getHeight();
+        double polovicaV = (visina - (visina * PADDING))/2;
+        double polovica = Math.min(polovicaS, polovicaV);
+        double s = (sirina / 2) - polovica;
+        double v = (visina / 2 ) - polovica;
+        double w = squareWidth();
+        
         int x = koordinati.getX();
         int y = koordinati.getY();
-        double w = squareWidth();
-        double i = x * w;
+        
+        double i = x * w ;
         double j = y * w;
-
+        
         if (zeton.equals(Zetoni.BELI)) {
             g2.setColor(Color.WHITE);
         } else {
@@ -88,7 +103,7 @@ public class Platno extends JPanel implements MouseListener {
         }
 
         g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
-        g2.fillOval((int) (i + w/4), (int) (j + w/4), (int) w / 2, (int) w / 2);
+        g2.fillOval((int) ((i + w/4) + s), (int) ((j + w/4) + v), (int) w / 2, (int) w / 2);
     }
 
     @Override
@@ -102,11 +117,7 @@ public class Platno extends JPanel implements MouseListener {
         if (Vodja.kdoJeNaVrsti().equals(Vrsta.CLOVEK)) {
             int x = e.getX();
             int y = e.getY();
-            int w = (int) (squareWidth());
-            int i = x / w;
-            int j = y / w;
-            Koordinati k = new Koordinati(i, j);
-            Vodja.getIgra().odigraj(k);
+            Vodja.getIgra().odigraj(getKoordinati(x, y));
             Vodja.cikel();
         }
 
@@ -138,5 +149,21 @@ public class Platno extends JPanel implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent arg0) {
 
+    }
+    
+    // izračuna koordinati (i, j) v polju glede na klik
+    private Koordinati getKoordinati(int x, int y) {
+    	double sirina = getWidth();
+        double polovicaS = (sirina - (sirina * PADDING))/2;
+        double visina = getHeight();
+        double polovicaV = (visina - (visina * PADDING))/2;
+        double polovica = Math.min(polovicaS, polovicaV);
+        double s = (sirina / 2) - polovica;
+        double v = (visina / 2 ) - polovica;
+        double w = squareWidth();
+        
+        int i = (int) (((double) x - s) / w);
+        int j = (int) (((double) y - v) / w);
+        return new Koordinati(i, j);
     }
 }
