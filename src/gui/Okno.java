@@ -1,8 +1,11 @@
 package gui;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
@@ -30,9 +33,10 @@ public class Okno extends JFrame implements ActionListener {
     private JPanel orodjarna;
     private JPanel glavnaPlosca;
     private JButton gumbZaNovoIgro;
-
     private JLabel status;
+ 
 
+    
     public Okno(int sirina, int visina) {
         // Vse to sem vzel s predavanj ...
         this.setTitle("Gomoku");
@@ -45,7 +49,8 @@ public class Okno extends JFrame implements ActionListener {
         
         // platno
         platno = new Platno();
-        glavnaPlosca.add(platno);
+        glavnaPlosca.add(platno, BorderLayout.CENTER);
+        platno.setVisible(true);
 
         // menu
         JMenuBar menu_bar = new JMenuBar();
@@ -71,7 +76,7 @@ public class Okno extends JFrame implements ActionListener {
         getContentPane().add(status, status_layout);
 
         status.setText("Izberite igro.");
-        glavnaPlosca.add(status);
+        glavnaPlosca.add(status, BorderLayout.CENTER);
         
         //////////////////////////////////////////////////////////////////////////////////////
         // vrstica za začeti novo igro
@@ -79,7 +84,7 @@ public class Okno extends JFrame implements ActionListener {
         gumbZaNovoIgro = new JButton("Začni znova.");
         gumbZaNovoIgro.addActionListener(this);
         orodjarna.add(gumbZaNovoIgro);
-        glavnaPlosca.add(orodjarna);
+        glavnaPlosca.add(orodjarna, BorderLayout.CENTER);
         orodjarna.setVisible(false);
         ////////////////////////////////////////////////////////////////////////////////////////
     }
@@ -105,6 +110,7 @@ public class Okno extends JFrame implements ActionListener {
             case V_TEKU:
                 String x = Vodja.getIgra().getNapotezi().equals(Zetoni.BELI) ? "beli" : "črni";
                 status.setText("Na potezi je " + x + ".");
+                orodjarna.setVisible(false);
                 break;
             case ZMAGA_BELI:
                 status.setText("Zmagal je beli.");
