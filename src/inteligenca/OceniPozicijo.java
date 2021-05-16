@@ -5,6 +5,6 @@ import logika.Zetoni;
 
 public class OceniPozicijo {
     public static int oceniPozicijo(Igra igra) {
-        Zetoni naPotezi = igra.getNapotezi();
+    	Zetoni naPotezi = igra.getNapotezi();
     }
 }
