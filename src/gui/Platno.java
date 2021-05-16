@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -21,7 +22,10 @@ public class Platno extends JPanel implements MouseListener {
 
     private final static double LINE_WIDTH = 0.05;
     private final static double PADDING = 0.05;
-
+    
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+  
+    
     public Platno() {
         setPreferredSize(getPreferredSize());
         setBackground(Color.PINK);
