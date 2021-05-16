@@ -24,6 +24,7 @@ import logika.Vrsta;
 import logika.Zetoni;
 import vodja.Vodja;
 
+@SuppressWarnings("serial")
 public class Okno extends JFrame implements ActionListener {
 
     private Platno platno;
@@ -45,15 +46,11 @@ public class Okno extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
 
-        glavnaPlosca = new JPanel();
-        glavnaPlosca.setLayout(new BoxLayout(glavnaPlosca, BoxLayout.Y_AXIS));
-        this.add(glavnaPlosca);
+        //glavnaPlosca = new JPanel();
+        //glavnaPlosca.setLayout(new BoxLayout(glavnaPlosca, BoxLayout.Y_AXIS));
+        //this.add(glavnaPlosca);
         
-        // platno
-        platno = new Platno();
-        glavnaPlosca.add(platno, BorderLayout.CENTER);
-        platno.setVisible(true);
-
+    
         // menu
         JMenuBar menu_bar = new JMenuBar();
         this.setJMenuBar(menu_bar);
@@ -79,6 +76,21 @@ public class Okno extends JFrame implements ActionListener {
         // alphaBeta = new JMenuItem("AlphaBeta");
         // inteligenca.add(alphaBeta);
         // alphaBeta.addActionListener(this);
+        
+     // platno
+        platno = new Platno();
+        // glavnaPlosca.add(platno, BorderLayout.CENTER);
+        platno.setVisible(true);
+        
+        GridBagConstraints platno_layout = new GridBagConstraints();
+		platno_layout.gridx = 0;
+		platno_layout.gridy = 0;
+		platno_layout.fill = GridBagConstraints.BOTH;
+		platno_layout.weightx = 1.0;
+		platno_layout.weighty = 1.0;
+		platno_layout.anchor = GridBagConstraints.CENTER;
+		getContentPane().add(platno, platno_layout);
+
 
         // statusna vrstica
         status = new JLabel();
@@ -87,10 +99,8 @@ public class Okno extends JFrame implements ActionListener {
         status_layout.gridx = 0;
         status_layout.gridy = 1;
         status_layout.anchor = GridBagConstraints.CENTER;
-        getContentPane().add(status, status_layout);
-
         status.setText("Izberite igro.");
-        glavnaPlosca.add(status, BorderLayout.CENTER);
+        getContentPane().add(status, status_layout);
         
         ///////////////////////////////////////////////////////////////////////////////////////////
         // vrstica za začeti novo igro
@@ -98,8 +108,13 @@ public class Okno extends JFrame implements ActionListener {
         gumbZaNovoIgro = new JButton("Začni znova.");
         gumbZaNovoIgro.addActionListener(this);
         orodjarna.add(gumbZaNovoIgro);
-        glavnaPlosca.add(orodjarna, BorderLayout.CENTER);
+        GridBagConstraints orodjarna_layout = new GridBagConstraints();
+        orodjarna_layout.gridx = 0;
+        orodjarna_layout.gridy = 2;
+        orodjarna_layout.anchor = GridBagConstraints.CENTER;
         orodjarna.setVisible(false);
+        getContentPane().add(orodjarna, orodjarna_layout);
+        
         ///////////////////////////////////////////////////////////////////////////////////////////
     }
 
