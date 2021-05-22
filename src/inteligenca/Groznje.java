@@ -5,40 +5,86 @@ import logika.Zetoni;
 
 public class Groznje {
     public static int groznje(Polje[][] plosca, Zetoni naVrsti) {
-        return stiri(plosca, naVrsti) + sStiri(plosca, naVrsti) + tri(plosca, naVrsti) + bTri(plosca, naVrsti) + pet(plosca, naVrsti);
+    	Zetoni niNaVrsti = (naVrsti == Zetoni.CRNI ? Zetoni.BELI : Zetoni.CRNI);
+    	int dobro = (stiri(plosca, naVrsti) + 
+        		stiriObrnjeno(plosca, naVrsti) +
+        		straightFour(plosca, naVrsti) +
+        		three(plosca, naVrsti) + 
+        		threeObrnjeno(plosca, naVrsti) +
+        		brokenThree(plosca, naVrsti) + 
+        		brokenThreeObrnjeno(plosca, naVrsti) +
+        		pet(plosca, naVrsti));
+    	int slabo = (stiri(plosca, niNaVrsti) + 
+        		stiriObrnjeno(plosca, niNaVrsti) +
+        		straightFour(plosca, niNaVrsti) +
+        		three(plosca, niNaVrsti) + 
+        		threeObrnjeno(plosca, niNaVrsti) +
+        		brokenThree(plosca, niNaVrsti) + 
+        		brokenThreeObrnjeno(plosca, niNaVrsti) +
+        		pet(plosca, niNaVrsti));   	
+        return dobro - slabo;
     }
 
-    // nevarnost: 5 - ze izgubljeno, 4 - ena poteza manjka, 3 - dve potezi, ...
+    
+    // Ocenujuje, kako ogržujoča je dana situacija (dano polje):
+    
+    // nevarnost: 
+    // 5 - ze izgubljeno, 
+    // 4 - ena poteza manjka, 
+    // 3 - dve potezi, ...
 
-    private static int sStiri(Polje[][] plosca, Zetoni naVrsti) {
+    // straight four: _XXXX_
+    private static int straightFour(Polje[][] plosca, Zetoni naVrsti) {
         Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
         Polje[] vzorec = { Polje.PRAZNO, p, p, p, p, Polje.PRAZNO };
         return (int) Math.pow(6, poisciVzorec(plosca, vzorec));
     }
 
+    // zakaj ta vzorec?
     private static int pet(Polje[][] plosca, Zetoni naVrsti) {
         Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
-        Polje[] vzorec = { Polje.PRAZNO, p, p, p, p, p, Polje.PRAZNO };
-        return (int) Math.pow(5, poisciVzorec(plosca, vzorec));
+        Polje[] vzorec = { p, p, p, p, p }; //zakaj še teli "prazno"
+        return (int) Math.pow(6, poisciVzorec(plosca, vzorec));
     }
 
     private static int stiri(Polje[][] plosca, Zetoni naVrsti) {
         Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
         Polje[] vzorec = { (p == Polje.BELI ? Polje.CRNI : Polje.BELI), p, p, p, p, Polje.PRAZNO };
-        return (int) Math.pow(4, poisciVzorec(plosca, vzorec));
+        return (int) Math.pow(5, poisciVzorec(plosca, vzorec));
     }
 
-    private static int bTri(Polje[][] plosca, Zetoni naVrsti) {
+    // a je to smiselno
+    private static int stiriObrnjeno(Polje[][] plosca, Zetoni naVrsti) {
+        Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
+        Polje[] vzorec = {Polje.PRAZNO, p, p, p, p, (p == Polje.BELI ? Polje.CRNI : Polje.BELI)};
+        return (int) Math.pow(4, poisciVzorec(plosca, vzorec));
+    }
+    
+    private static int brokenThree(Polje[][] plosca, Zetoni naVrsti) {
         Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
         Polje[] vzorec = { Polje.PRAZNO, p, Polje.PRAZNO, p, p, Polje.PRAZNO };
         return (int) Math.pow(4, poisciVzorec(plosca, vzorec));
     }
+    
+    private static int brokenThreeObrnjeno(Polje[][] plosca, Zetoni naVrsti) {
+        Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
+        Polje[] vzorec = { Polje.PRAZNO, p, p, Polje.PRAZNO, p, Polje.PRAZNO };
+        return (int) Math.pow(4, poisciVzorec(plosca, vzorec));
+    }
+    
 
-    private static int tri(Polje[][] plosca, Zetoni naVrsti) {
+    private static int three(Polje[][] plosca, Zetoni naVrsti) {
         Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
         Polje[] vzorec = { Polje.PRAZNO, p, p, p, Polje.PRAZNO };
         return (int) Math.pow(3, poisciVzorec(plosca, vzorec));
     }
+
+    private static int threeObrnjeno(Polje[][] plosca, Zetoni naVrsti) {
+        Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
+        Polje[] vzorec = { Polje.PRAZNO, p, p, p, Polje.PRAZNO };
+        return (int) Math.pow(3, poisciVzorec(plosca, vzorec));
+    }
+    
 
     private static int poisciVzorec(Polje[][] plosca, Polje[] vzorec) {
         // Vrne stevilo pojavitev tega vzorca
