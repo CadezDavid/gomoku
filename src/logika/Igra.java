@@ -260,4 +260,17 @@ public class Igra {
     public void setPoteze(List<Koordinati> poteze) {
         this.poteze = poteze;
     }
+    
+    /**
+	 * Ustvari kopijo igre.
+	 */
+	public Igra(Igra igra) {
+		this.plosca = new Polje[15][15];
+		for (int i = 0; i < 15; i++) {
+			for (int j = 0; j < 15; j++) {
+				this.plosca[i][j] = igra.plosca[i][j];
+			}
+		}
+		this.naPotezi = igra.naPotezi;
+	}
 }
