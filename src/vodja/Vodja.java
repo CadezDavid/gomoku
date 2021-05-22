@@ -17,7 +17,7 @@ public class Vodja {
 
     private static Okno okno;
     private static Igra igra;
-    private static Inteligenca racunalnik = new Inteligenca(5);
+    private static Inteligenca racunalnik = new Inteligenca(3);
 
     public static void ustvariNovoIgro(EnumMap<Zetoni, Igralec> igralca) {
         igra = new Igra(igralca);
@@ -62,7 +62,11 @@ public class Vodja {
                 } catch (Exception e) {
                 }
                 ;
+                if (poteza == null) {
+                	System.out.println("Aaa tukej ripnem.");
+                } else {
                 igra.odigraj(poteza);
+                }
                 cikel();
             }
         };
