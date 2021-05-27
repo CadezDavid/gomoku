@@ -31,11 +31,15 @@ public class Okno extends JFrame implements ActionListener {
 
     private JMenuItem igraClovekClovek;
     private JMenuItem igraRacunalnikClovek;
+    private JMenuItem igraClovekRacunalnik;
     // private JMenuItem miniMax;
     // private JMenuItem alphaBeta;
     private JPanel orodjarna;
-    private JPanel glavnaPlosca;
+    private JPanel zacetni;
     private JButton gumbZaNovoIgro;
+    private JButton gumbCC;
+    private JButton gumbCR;
+    private JButton gumbRC;
     private JLabel status;
  
 
@@ -64,7 +68,12 @@ public class Okno extends JFrame implements ActionListener {
         igraRacunalnikClovek = new JMenuItem("Računalnik – Človek");
         igra_menu.add(igraRacunalnikClovek);
         igraRacunalnikClovek.addActionListener(this);
-
+        
+        igraClovekRacunalnik = new JMenuItem("Človek - računalnik");
+        igra_menu.add(igraClovekRacunalnik);
+        igraClovekRacunalnik.addActionListener(this);
+        
+        
         // // tip racunalnika
         // JMenu inteligenca = new JMenu("Inteligenca");
         // menu_bar.add(inteligenca);
@@ -101,6 +110,7 @@ public class Okno extends JFrame implements ActionListener {
         status_layout.anchor = GridBagConstraints.CENTER;
         status.setText("Izberite igro.");
         getContentPane().add(status, status_layout);
+        status.setVisible(true);
         
         ///////////////////////////////////////////////////////////////////////////////////////////
         // vrstica za začeti novo igro
@@ -116,6 +126,23 @@ public class Okno extends JFrame implements ActionListener {
         getContentPane().add(orodjarna, orodjarna_layout);
         
         ///////////////////////////////////////////////////////////////////////////////////////////
+        
+        zacetni = new JPanel();
+        gumbCC = new JButton("Človek - človek");
+        gumbCC.addActionListener(this);
+        zacetni.add(gumbCC);
+        gumbCR = new JButton("Človek - računalnik");
+        gumbCR.addActionListener(this);
+        zacetni.add(gumbCR);
+        gumbRC = new JButton("Računalnik - človek");
+        gumbRC.addActionListener(this);
+        zacetni.add(gumbRC);
+        GridBagConstraints zacetni_layout = new GridBagConstraints();
+        zacetni_layout.gridx = 0;
+        zacetni_layout.gridy = 3;
+        zacetni_layout.anchor = GridBagConstraints.CENTER;
+        zacetni.setVisible(true);
+        getContentPane().add(zacetni, zacetni_layout);
     }
 
     @Override
@@ -123,7 +150,10 @@ public class Okno extends JFrame implements ActionListener {
         EnumMap<Zetoni, Igralec> igralca = new EnumMap<Zetoni, Igralec>(Zetoni.class);
         if (e.getSource() == igraRacunalnikClovek) {
             igralca.put(Zetoni.CRNI, new Igralec(Vrsta.RACUNALNIK, "milan"));
-            igralca.put(Zetoni.BELI, new Igralec(Vrsta.CLOVEK, "janko"));
+            igralca.put(Zetoni.BELI, new Igralec(Vrsta.CLOVEK, "janko")); 
+        } else if (e.getSource() == igraClovekRacunalnik) {
+        	igralca.put(Zetoni.CRNI, new Igralec(Vrsta.CLOVEK, "janko"));
+            igralca.put(Zetoni.BELI, new Igralec(Vrsta.RACUNALNIK, "milan")); 
         } else if (e.getSource() == igraClovekClovek) {
             igralca.put(Zetoni.BELI, new Igralec(Vrsta.CLOVEK, "marcel"));
             igralca.put(Zetoni.CRNI, new Igralec(Vrsta.CLOVEK, "ciril"));
@@ -144,10 +174,12 @@ public class Okno extends JFrame implements ActionListener {
             case ZMAGA_BELI:
                 status.setText("Zmagal je beli.");
                 orodjarna.setVisible(true);
+                zacetni.setVisible(true);
                 break;
             case ZMAGA_CRNI:
                 status.setText("Zmagal je črni.");
                 orodjarna.setVisible(true);
+                zacetni.setVisible(true);
                 break;
             case NEODLOCENO:
                 status.setText("Neodločeno.");

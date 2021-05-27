@@ -32,7 +32,7 @@ public class Vodja {
                     case RACUNALNIK:
                         if (igra.getPoteze().equals(new LinkedList<Koordinati>())) {
                             igra.odigraj(new Koordinati(7, 7));
-                        } else if (igra.getPoteze().size() < 10) {
+                        } else if (igra.getPoteze().size() < 4) {
                             igra.odigraj(new Inteligenca(2).izberiPotezo(igra));
                         } else {
                             igrajRacunalnikovoPotezo();

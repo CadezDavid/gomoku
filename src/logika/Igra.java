@@ -84,23 +84,50 @@ public class Igra {
         return kopija;
     }
 
-    public Set<Koordinati> moznePoteze() {
-        Set<Koordinati> moznePoteze = new HashSet<Koordinati>();
+    public List<Koordinati> moznePoteze() {
+        List<Koordinati> moznePoteze = new LinkedList<Koordinati>();
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                if (getPlosca()[i][j] != Polje.PRAZNO) {
-                    for (int di = -2; di < 3; di++) {
-                        for (int dj = -2; dj < 3; dj++) {
-                            if (0 <= i + di && i + di < 15 && 0 <= j + dj && j + dj < 15
-                                    && getPlosca()[i + di][j + dj] == Polje.PRAZNO) {
-                                moznePoteze.add(new Koordinati(i + di, j + dj));
-                            }
-                        }
-                    }
+                if (getPlosca()[i][j] == Polje.PRAZNO) {
+                	moznePoteze.add(new Koordinati(i, j));
                 }
             }
         }
-
+        return moznePoteze;
+    }
+                
+        
+        
+        
+        // TAKA, KI POBERE SAMO TISTE IZ OKOLICE
+//        public Set<Koordinati> moznePoteze() {
+//            Set<Koordinati> moznePoteze = new HashSet<Koordinati>();
+//            for (int i = 0; i < 15; i++) {
+//                for (int j = 0; j < 15; j++) {
+//                    if (getPlosca()[i][j] != Polje.PRAZNO) {
+//                        for (int di = Math.max(0, i - 2); di < Math.min(i + 3, 15); di++) {
+//                            for (int dj = Math.max(0, j - 2); dj< Math.min(j + 3, 15); dj++) {
+//                                if (getPlosca()[di][dj] == Polje.PRAZNO) {
+//                                    moznePoteze.add(new Koordinati(di, dj));
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+        //DAVID
+//        for (int di = -2; di < 3; di++) {
+//            for (int dj = -2; dj < 3; dj++) {
+//                if (0 <= i + di && i + di < 15 && 0 <= j + dj && j + dj < 15
+//                        && getPlosca()[i + di][j + dj] == Polje.PRAZNO) {
+//                    moznePoteze.add(new Koordinati(i + di, j + dj));
+// JS
+//        for (int di = Math.max(0, i - 2); di < Math.min(i + 2,  15); di++) {
+//            for (int dj = Math.max(0,  j - 2); dj < Math.min(j + 2,  15); dj++) {
+//                if (di != 0 && dj != 0) {
+//                	if (getPlosca()[i + di][j + dj].equals(Polje.PRAZNO))
+//                    moznePoteze.add(new Koordinati(i + di, j + dj));
+//                }
         // Set<Koordinati> moznePoteze = new HashSet<Koordinati>();
         // for (int i = 0; i < 15; i++) {
         // for (int j = 0; j < 15; j++) {
@@ -109,8 +136,7 @@ public class Igra {
         // }
         // }
         // }
-        return moznePoteze;
-    }
+       
 
     public Polje[][] getPlosca() {
         return plosca;
@@ -260,17 +286,5 @@ public class Igra {
     public void setPoteze(List<Koordinati> poteze) {
         this.poteze = poteze;
     }
-    
-    /**
-	 * Ustvari kopijo igre.
-	 */
-	public Igra(Igra igra) {
-		this.plosca = new Polje[15][15];
-		for (int i = 0; i < 15; i++) {
-			for (int j = 0; j < 15; j++) {
-				this.plosca[i][j] = igra.plosca[i][j];
-			}
-		}
-		this.naPotezi = igra.naPotezi;
-	}
+
 }
