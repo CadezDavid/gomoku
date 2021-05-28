@@ -17,7 +17,7 @@ public class Vodja {
 
     private static Okno okno;
     private static Igra igra;
-    private static Inteligenca racunalnik = new Inteligenca(4);
+    private static Inteligenca racunalnik = new Inteligenca(3);
 
     public static void ustvariNovoIgro(EnumMap<Zetoni, Igralec> igralca) {
         igra = new Igra(igralca);
