@@ -1,7 +1,7 @@
 import java.io.IOException;
 
 import gui.Okno;
-import vodja.Vodja;
+
 
 public class Gomoku {
 

@@ -93,7 +93,6 @@ public class Inteligenca extends KdoIgra {
         }
         najboljeOcenjenePoteze.addPoteza(kandidat, ocena);
         return najboljeOcenjenePoteze;
-
     }
 
     private static List<PotezaZOceno> izberiNajboljse(Igra igra, List<Koordinati> poteze, Zetoni naPotezi,
