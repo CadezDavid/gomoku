@@ -1,6 +1,5 @@
 package inteligenca;
 
-import logika.Igra;
 import logika.Polje;
 import logika.Zetoni;
 

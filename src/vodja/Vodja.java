@@ -17,7 +17,7 @@ public class Vodja {
 
     private static Okno okno;
     private static Igra igra;
-    private static Inteligenca racunalnik = new Inteligenca(3);
+    private static Inteligenca racunalnik = new Inteligenca(4);
 
     public static void ustvariNovoIgro(EnumMap<Zetoni, Igralec> igralca) {
         igra = new Igra(igralca);
@@ -32,8 +32,6 @@ public class Vodja {
                     case RACUNALNIK:
                         if (igra.getPoteze().equals(new LinkedList<Koordinati>())) {
                             igra.odigraj(new Koordinati(7, 7));
-                        } else if (igra.getPoteze().size() < 4) {
-                            igra.odigraj(new Inteligenca(2).izberiPotezo(igra));
                         } else {
                             igrajRacunalnikovoPotezo();
                         }
@@ -61,11 +59,10 @@ public class Vodja {
                     poteza = get();
                 } catch (Exception e) {
                 }
-                ;
                 if (poteza == null) {
-                	System.out.println("Aaa tukej ripnem.");
+                    System.out.println("Aaa tukej ripnem.");
                 } else {
-                igra.odigraj(poteza);
+                    igra.odigraj(poteza);
                 }
                 cikel();
             }

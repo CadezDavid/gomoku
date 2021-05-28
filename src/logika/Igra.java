@@ -39,11 +39,11 @@ public class Igra {
             plosca[koordinati.getX()][koordinati.getY()] = (naPotezi == Zetoni.BELI) ? Polje.BELI : Polje.CRNI;
             if (preveriZmago(koordinati)) {
                 stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
-                System.out.println("Zmagal je " + stanje.toString() + ".");
+                // System.out.println("Zmagal je " + stanje.toString() + ".");
             }
             if (preveriNeodloceno()) {
-            	stanje = Stanje.NEODLOCENO;
-            	System.out.println("Neodločeno!");
+                stanje = Stanje.NEODLOCENO;
+                // System.out.println("Neodločeno!");
             }
             setNaPotezi(naPotezi == Zetoni.BELI ? Zetoni.CRNI : Zetoni.BELI);
             poteze.add(koordinati);
@@ -84,59 +84,38 @@ public class Igra {
         return kopija;
     }
 
+    // public List<Koordinati> moznePoteze() {
+    // List<Koordinati> moznePoteze = new LinkedList<Koordinati>();
+    // for (int i = 0; i < 15; i++) {
+    // for (int j = 0; j < 15; j++) {
+    // if (getPlosca()[i][j] == Polje.PRAZNO) {
+    // moznePoteze.add(new Koordinati(i, j));
+    // }
+    // }
+    // }
+    // return moznePoteze;
+    // }
+
     public List<Koordinati> moznePoteze() {
-        List<Koordinati> moznePoteze = new LinkedList<Koordinati>();
+        Set<Koordinati> moznePoteze = new HashSet<Koordinati>();
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                if (getPlosca()[i][j] == Polje.PRAZNO) {
-                	moznePoteze.add(new Koordinati(i, j));
+                if (getPlosca()[i][j] != Polje.PRAZNO) {
+                    for (int m = Math.max(0, i - 2); m < Math.min(i + 2, 15); m++) {
+                        for (int n = Math.max(0, j - 2); n < Math.min(j + 2, 15); n++) {
+                            if (m != 0 || n != 0) {
+                                if (getPlosca()[m][n].equals(Polje.PRAZNO))
+                                    moznePoteze.add(new Koordinati(m, n));
+                            }
+                        }
+                    }
                 }
             }
         }
-        return moznePoteze;
+        List<Koordinati> list = new LinkedList<Koordinati>();
+        list.addAll(moznePoteze);
+        return list;
     }
-                
-        
-        
-        
-        // TAKA, KI POBERE SAMO TISTE IZ OKOLICE
-//        public Set<Koordinati> moznePoteze() {
-//            Set<Koordinati> moznePoteze = new HashSet<Koordinati>();
-//            for (int i = 0; i < 15; i++) {
-//                for (int j = 0; j < 15; j++) {
-//                    if (getPlosca()[i][j] != Polje.PRAZNO) {
-//                        for (int di = Math.max(0, i - 2); di < Math.min(i + 3, 15); di++) {
-//                            for (int dj = Math.max(0, j - 2); dj< Math.min(j + 3, 15); dj++) {
-//                                if (getPlosca()[di][dj] == Polje.PRAZNO) {
-//                                    moznePoteze.add(new Koordinati(di, dj));
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-        //DAVID
-//        for (int di = -2; di < 3; di++) {
-//            for (int dj = -2; dj < 3; dj++) {
-//                if (0 <= i + di && i + di < 15 && 0 <= j + dj && j + dj < 15
-//                        && getPlosca()[i + di][j + dj] == Polje.PRAZNO) {
-//                    moznePoteze.add(new Koordinati(i + di, j + dj));
-// JS
-//        for (int di = Math.max(0, i - 2); di < Math.min(i + 2,  15); di++) {
-//            for (int dj = Math.max(0,  j - 2); dj < Math.min(j + 2,  15); dj++) {
-//                if (di != 0 && dj != 0) {
-//                	if (getPlosca()[i + di][j + dj].equals(Polje.PRAZNO))
-//                    moznePoteze.add(new Koordinati(i + di, j + dj));
-//                }
-        // Set<Koordinati> moznePoteze = new HashSet<Koordinati>();
-        // for (int i = 0; i < 15; i++) {
-        // for (int j = 0; j < 15; j++) {
-        // if (getPlosca()[i][j] == Polje.PRAZNO) {
-        // moznePoteze.add(new Koordinati(i, j));
-        // }
-        // }
-        // }
-       
 
     public Polje[][] getPlosca() {
         return plosca;
@@ -163,15 +142,16 @@ public class Igra {
     }
 
     public boolean preveriNeodloceno() {
-    	Polje[][] polje = this.getPlosca();
-    	for (int i = 0; i < 15; i++) {
-    		for (int j = 0; j < 15; j++) {
-    			if (polje[i][j].equals(Polje.PRAZNO)) return false;
-    		}
-    	}
-    	return true;
+        Polje[][] polje = this.getPlosca();
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (polje[i][j].equals(Polje.PRAZNO))
+                    return false;
+            }
+        }
+        return true;
     }
-    
+
     public boolean preveriZmago(Koordinati k) {
         return (preveriVrsto(k) || preveriStolpec(k) || preveriDiagonaloDD(k) || preveriDiagonaloDG(k));
     }

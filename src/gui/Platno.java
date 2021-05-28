@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -18,7 +17,6 @@ import logika.Zetoni;
 import splosno.Koordinati;
 import vodja.Vodja;
 
-@SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener {
 
     private final static double LINE_WIDTH = 0.05;
