@@ -39,7 +39,7 @@ public class Inteligenca extends KdoIgra {
         }
         List<Koordinati> moznePoteze = igra.moznePoteze();
 
-        List<PotezaZOceno> najboljse = izberiNajboljse(igra, moznePoteze, igra.getNaPotezi(), 20);
+        List<PotezaZOceno> najboljse = izberiNajboljse(igra, moznePoteze, igra.getNaPotezi(), 150);
         List<Koordinati> najboljseKoordinate = new LinkedList<Koordinati>();
         for (PotezaZOceno poteza : najboljse) {
             najboljseKoordinate.add(poteza.getPoteza());
