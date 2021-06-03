@@ -15,6 +15,13 @@ public class Igra {
     private Polje[][] plosca;
     private List<Koordinati> poteze;
 
+    /**
+     * Konstruktor Igra, ki ustvari igro - kot igralca, ki je na 
+     * potezi, nastavi črnega, saj črni začne. Stanje igre nastavi na
+     * V_TEKU in zariše novo, prazno igralno polje. 
+     * 
+     * @param igralca - igralca, ki bosta igrala igro
+     */
     public Igra(EnumMap<Zetoni, Igralec> igralca) {
         // Zacne crni
         naPotezi = Zetoni.CRNI;
@@ -32,18 +39,23 @@ public class Igra {
         poteze = new LinkedList<Koordinati>();
     }
 
+    /**
+     * Funkicja, ki preveri, ali je sta koordinati poteze, ki jo želim odigrati,
+     * validni (če je polje prazno), in če sta, to potezo tudi odigra, nato
+     * pa preveri, ali je poteza privedla do zmage ali pa neodločenega izida. 
+     * 
+     * @param koordinati - koordinati poteze, ki jo želimo odigrati
+     * @return - vrne true, če je bila poteza validna, in false, če je 
+     * ne moremo odigrati
+     */
     public boolean odigraj(Koordinati koordinati) {
-        // Pogleda, če je polje, ki ga želi igralec igrati prazno
-        // Če je, tja postavi žeton igralca na potezi in vrne true
         if (plosca[koordinati.getX()][koordinati.getY()] == Polje.PRAZNO) {
             plosca[koordinati.getX()][koordinati.getY()] = (naPotezi == Zetoni.BELI) ? Polje.BELI : Polje.CRNI;
             if (preveriZmago(koordinati)) {
                 stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
-                // System.out.println("Zmagal je " + stanje.toString() + ".");
-            }
+                }
             if (preveriNeodloceno()) {
                 stanje = Stanje.NEODLOCENO;
-                // System.out.println("Neodločeno!");
             }
             setNaPotezi(naPotezi == Zetoni.BELI ? Zetoni.CRNI : Zetoni.BELI);
             poteze.add(koordinati);
@@ -52,8 +64,10 @@ public class Igra {
             return false;
     }
 
+    /**
+     * Izbere prvo prosto polje in to potezo odigra.
+     */
     public void nakljucna() {
-        // Izvede pac neko potezo, to je zaenkrat namesto računalnik
         int x = 0;
         int y = 0;
         for (int i = 0; i < 15; i++) {
@@ -68,6 +82,9 @@ public class Igra {
         this.odigraj(koordinati);
     }
 
+    /**
+     * Ustvari kopijo igre.
+     */
     public Igra clone() {
         Igra kopija = new Igra(this.getIgralca());
         kopija.setNaPotezi(this.getNaPotezi());
@@ -84,18 +101,13 @@ public class Igra {
         return kopija;
     }
 
-    // public List<Koordinati> moznePoteze() {
-    // List<Koordinati> moznePoteze = new LinkedList<Koordinati>();
-    // for (int i = 0; i < 15; i++) {
-    // for (int j = 0; j < 15; j++) {
-    // if (getPlosca()[i][j] == Polje.PRAZNO) {
-    // moznePoteze.add(new Koordinati(i, j));
-    // }
-    // }
-    // }
-    // return moznePoteze;
-    // }
 
+    /**
+     * Funkcija se sprehodi po plošči in pregleda kvadratek 3x3 okoli
+     * vsakega polnega polja. Prazna polja doda v seznam možnih potez.
+     * 
+     * @return - vrne seznam možnih potez
+     */
     public List<Koordinati> moznePoteze() {
         Set<Koordinati> moznePoteze = new HashSet<Koordinati>();
         for (int i = 0; i < 15; i++) {
@@ -140,7 +152,11 @@ public class Igra {
     public void setStanje(Stanje stanje) {
         this.stanje = stanje;
     }
-
+    
+    /**
+     * Preveri, ali se je stanje igre neodločeno.
+     * @return - true, če so vsa polja zapolnjena in false sicer
+     */
     public boolean preveriNeodloceno() {
         Polje[][] polje = this.getPlosca();
         for (int i = 0; i < 15; i++) {
@@ -152,10 +168,20 @@ public class Igra {
         return true;
     }
 
+    /** 
+     * Preveri, ali se je kje zmagovalna vrstica.
+     * @param k - koordinati, ki smo ju odigrali
+     * @return - true, če je bila k zmagovalna poteza in false sicer
+     */
     public boolean preveriZmago(Koordinati k) {
         return (preveriVrsto(k) || preveriStolpec(k) || preveriDiagonaloDD(k) || preveriDiagonaloDG(k));
     }
 
+    /**
+     * Preveri, ali je v vrsti okoli koordinate k, ki smo jo vnesli, vsaj 5 polj iste barve
+     * @param koordinati - koordinati, ki smo ju odigrali
+     * @return - true, če je okoli k v vrsti vsaj 5 žetonov iste barve
+     */
     public boolean preveriVrsto(Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
@@ -179,6 +205,11 @@ public class Igra {
         return (stevec + 1 >= 5);
     }
 
+    /**
+     * Preveri, ali je v stolpcu okoli koordinate k, ki smo jo vnesli, vsaj 5 polj iste barve
+     * @param koordinati - koordinati, ki smo ju odigrali
+     * @return - true, če je okoli k v stolpcu vsaj 5 žetonov iste barve
+     */
     public boolean preveriStolpec(Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
@@ -202,7 +233,12 @@ public class Igra {
         return (stevec + 1 >= 5);
     }
 
-    // preveri diagonalo "desno dol"
+    /**
+     * Preveri, ali je v diagonali "desno dol" okoli koordinate k, ki smo jo vnesli, vsaj 
+     * 5 polj iste barve
+     * @param koordinati - koordinati, ki smo ju odigrali
+     * @return - true, če je okoli k po diagonali "desno dol" vsaj 5 žetonov iste barve
+     */
     public boolean preveriDiagonaloDD(Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
@@ -226,7 +262,12 @@ public class Igra {
         return stevec + 1 >= 5;
     }
 
-    // preveri diagonalo "desno gor"
+    /**
+     * Preveri, ali je v diagonali "desno gor" okoli koordinate k, ki smo jo vnesli, 
+     * vsaj 5 polj iste barve
+     * @param koordinati - koordinati, ki smo ju odigrali
+     * @return - true, če je okoli k po diagonali "desno gor" vsaj 5 žetonov iste barve
+     */
     public boolean preveriDiagonaloDG(Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
