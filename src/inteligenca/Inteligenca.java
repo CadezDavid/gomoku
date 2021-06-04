@@ -21,14 +21,22 @@ public class Inteligenca extends KdoIgra {
         globina = g;
     }
 
-    // Vrne koordinati ene od potez z največjo vrednostjo.
+    /**
+     * Vrne eno izmed najboljših potez - njeni koordinati
+     * @param igra - igra, ki jo igramo
+     * @return - koordinati ene izmed najboljših potez
+     */
     public Koordinati izberiPotezo(Igra igra) {
         return alphaBeta(igra, Integer.MIN_VALUE, Integer.MAX_VALUE, igra.getNaPotezi()).getPoteza();
     }
 
     /**
-     * Algoritem alphaBeta, preveri in oceni poteze in vrne seznam (razred
-     * NajboljeOcenjenePoteze) najbolje ocenjenih potez
+     * 
+     * @param igra - igra, ki jo igramo
+     * @param alpha
+     * @param beta
+     * @param zetoni - žetoni, ki so na vrsti
+     * @return - vrne seznam ocenjenih potez
      */
     public OcenjenePoteze alphaBeta(Igra igra, int alpha, int beta, Zetoni zetoni) {
         int ocena;
@@ -37,9 +45,14 @@ public class Inteligenca extends KdoIgra {
         } else {
             ocena = ZMAGA;
         }
+        
+        // seznam možnih potez
         List<Koordinati> moznePoteze = igra.moznePoteze();
-
+        
+        // izmed možnih potez izberemo najboljše
         List<PotezaZOceno> najboljse = izberiNajboljse(igra, moznePoteze, igra.getNaPotezi(), 150);
+        
+        // seznam potez z oceno pretvorimo v seznam koordinat
         List<Koordinati> najboljseKoordinate = new LinkedList<Koordinati>();
         for (PotezaZOceno poteza : najboljse) {
             najboljseKoordinate.add(poteza.getPoteza());
@@ -48,6 +61,8 @@ public class Inteligenca extends KdoIgra {
         Koordinati kandidat = najboljse.get(0).getPoteza();
         OcenjenePoteze najboljeOcenjenePoteze = new OcenjenePoteze();
 
+        // sprehodimo se po najboljših koordinatah; alphaBeta algoritem oceni, kako bi
+        // se igra odvila, če bi odigrali to potezo
         for (Koordinati k : najboljseKoordinate) {
             Igra kopijaIgre = igra.clone();
             kopijaIgre.odigraj(k);
@@ -85,7 +100,6 @@ public class Inteligenca extends KdoIgra {
                 }
             }
             if (alpha >= beta) {
-                // najboljeOcenjenePoteze.addPoteza(kandidat, ocena);
                 OcenjenePoteze x = new OcenjenePoteze();
                 x.addPoteza(kandidat, ocena);
                 return x;
@@ -96,6 +110,14 @@ public class Inteligenca extends KdoIgra {
 
     }
 
+    /**
+     * Poišče najboljše poteze.
+     * @param igra - igra, ki jo igramo
+     * @param poteze - poteze, ki so na voljo
+     * @param naPotezi - žeton, ki je na potezi
+     * @param velikost - velikost bufferja
+     * @return - seznam potez z najboljšimi ocenami
+     */
     private static List<PotezaZOceno> izberiNajboljse(Igra igra, List<Koordinati> poteze, Zetoni naPotezi,
             int velikost) {
         OcenjenaPotezaBuffer buffer = new OcenjenaPotezaBuffer(velikost);
@@ -110,6 +132,11 @@ public class Inteligenca extends KdoIgra {
 
 }
 
+/*
+ * Objekt razreda OcenjenePoteze nosi dva podatka -
+ * oceno in pa seznam potez, ki jo imajo.
+ *
+ */
 class OcenjenePoteze {
     int ocena;
     List<Koordinati> poteze;
@@ -124,12 +151,24 @@ class OcenjenePoteze {
         return poteze.get(r.nextInt(poteze.size()));
     }
 
+    /**
+     * Doda potezo objektu OcenjenePoteze.
+     * @param k -koordinati poteze, ki jo dodajamo
+     * @param o - ocena poteze, ki jo dodajamo
+     */
     public void addPoteza(Koordinati k, int o) {
+    	// če je ocena poteze k manjša od trenutne ocene objekta,
+    	// poteze ne dodamo
         if (o < ocena) {
             return;
+        // če je ocena poteze k enaka trenutni oceni objekta,
+        // to potezo dodamo seznamu
         } else if (o == ocena) {
             poteze.add(k);
             return;
+        // če je ocena poteze k večja od trenunte ocene objekta,
+        // izpraznimo seznam potez in dodamo le potezo k, prav
+        // tako oceno nastavimo na o
         } else {
             setOcena(o);
             poteze = new LinkedList<Koordinati>();
@@ -159,18 +198,20 @@ class OcenjenaPotezaBuffer {
         this.buffer = new LinkedList<PotezaZOceno>();
     }
 
-    // Tukaj bi imel človek tist razred Poteza z oceno, da bi lahko to lepo dodajal,
-    // zdaj ga bom naredila, da vidim,kako bi to bilo
+   /**
+    * Doda ocenjeno potezo v buffer.
+    * @param p - poteza z oceno, ki jo dodajamo
+    */
     public void add(PotezaZOceno p) {
         int i = 0;
         for (PotezaZOceno po : buffer) {
             if (p.compareTo(po) != 1)
                 i++; // če je ocena poteze p <= oceni poteze po, povečamo i
             else
-                break; // izstopimo iz zanke - torej če najdemo vdčjo, jo bomo zamenjal
+                break; // izstopimo iz zanke 
         }
         if (i < velikost)
-            buffer.add(i, p); // doda koordinati p na i-to mesto
+            buffer.add(i, p);
         if (buffer.size() > velikost)
             buffer.removeLast();
     }
@@ -181,6 +222,12 @@ class OcenjenaPotezaBuffer {
 
 }
 
+/**
+ * 
+ * Objekt razreda PotezaZOceno vsebuje
+ * dva podatka - koordinati in oceno poteze.
+ *
+ */
 class PotezaZOceno {
     Koordinati poteza;
     int ocena;
