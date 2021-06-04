@@ -24,6 +24,9 @@ public class Vodja {
         cikel();
     }
 
+    /**
+     * Cikel igre.
+     */
     public static void cikel() {
         okno.osveziGUI();
         switch (igra.getStanje()) {
@@ -45,6 +48,9 @@ public class Vodja {
         }
     }
 
+    /**
+     * Odigra računalnikovo potezo.
+     */
     public static void igrajRacunalnikovoPotezo() {
         SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void>() {
             @Override
@@ -60,7 +66,7 @@ public class Vodja {
                 } catch (Exception e) {
                 }
                 if (poteza == null) {
-                    System.out.println("Aaa tukej ripnem.");
+                	
                 } else {
                     igra.odigraj(poteza);
                 }
