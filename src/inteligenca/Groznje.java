@@ -78,12 +78,12 @@ public class Groznje {
     
     /**
      * Prešteje, kolikokrat se vzorec pojavi na plošči.
+     * Pregleda vrstice, stolpce in diagonale.
      * @param plosca - trenutna plošča
      * @param vzorec - vzorec, ki ga iščemo
      * @return - število pojavitev vzorca
      */
     private static int poisciVzorec(Polje[][] plosca, Polje[] vzorec) {
-        // Vrne stevilo pojavitev tega vzorca
         int stevec = 0;
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15 - vzorec.length + 1; j++) {
