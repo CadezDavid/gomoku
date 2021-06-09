@@ -22,6 +22,7 @@ public class Igra {
      * V_TEKU in zariše novo, prazno igralno polje. 
      * 
      * @param igralca - igralca, ki bosta igrala igro
+     * @param velikost - velikost plosce
      */
     public Igra(EnumMap<Zetoni, Igralec> igralca, int v) {
     	setVelikost(v);

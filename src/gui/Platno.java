@@ -17,14 +17,13 @@ import logika.Zetoni;
 import splosno.Koordinati;
 import vodja.Vodja;
 
-@SuppressWarnings("serial")
+// @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener {
 
     private final static double LINE_WIDTH = 0.05;
     private final static double PADDING = 0.05;
     private static Color ozadje = new Color(255, 218, 179);
     private int velikost;
-    
 
     public Platno(int v) {
         setPreferredSize(getPreferredSize());
@@ -38,19 +37,19 @@ public class Platno extends JPanel implements MouseListener {
     }
 
     private double squareWidth() {
-        return (Math.min(getWidth(), getHeight()) - (Math.min(getWidth(), getHeight()) * PADDING)) / velikost;
+        return Math.min(getWidth(), getHeight()) * (1 - PADDING) / (double) velikost;
     }
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         double sirina = getWidth();
-        double polovicaS = (sirina - (sirina * PADDING))/2;
+        double polovicaS = (sirina - (sirina * PADDING)) / 2;
         double visina = getHeight();
-        double polovicaV = (visina - (visina * PADDING))/2;
+        double polovicaV = (visina - (visina * PADDING)) / 2;
         double polovica = Math.min(polovicaS, polovicaV);
         double s = (sirina / 2) - polovica;
-        double v = (visina / 2 ) - polovica;
+        double v = (visina / 2) - polovica;
         double w = squareWidth();
 
         // narišemo črte
@@ -58,8 +57,9 @@ public class Platno extends JPanel implements MouseListener {
         g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
         for (int i = 0; i < velikost + 1; i++) {
             g2.drawLine((int) ((i * w) + s), (int) (v), (int) (i * w + s), (int) (velikost * w + v));
-            g2.drawLine((int) (s), (int) ((i * w) + v), (int) (velikost * w+ s) , (int) (i * w+ v));
+            g2.drawLine((int) (s), (int) ((i * w) + v), (int) (velikost * w + s), (int) (i * w + v));
         }
+        System.out.println(velikost);
 
         if (Vodja.getIgra() != null) {
             Polje[][] plosca = Vodja.getIgra().getPlosca();
@@ -83,20 +83,20 @@ public class Platno extends JPanel implements MouseListener {
 
     public void paintSquare(Graphics2D g2, Zetoni zeton, Koordinati koordinati) {
         double sirina = getWidth();
-        double polovicaS = (sirina - (sirina * PADDING))/2;
+        double polovicaS = sirina * (1 - PADDING) / 2;
         double visina = getHeight();
-        double polovicaV = (visina - (visina * PADDING))/2;
+        double polovicaV = visina * (1 - PADDING) / 2;
         double polovica = Math.min(polovicaS, polovicaV);
         double s = (sirina / 2) - polovica;
-        double v = (visina / 2 ) - polovica;
+        double v = (visina / 2) - polovica;
         double w = squareWidth();
-        
+
         int x = koordinati.getX();
         int y = koordinati.getY();
-        
-        double i = x * w ;
+
+        double i = x * w;
         double j = y * w;
-        
+
         if (zeton.equals(Zetoni.BELI)) {
             g2.setColor(Color.WHITE);
         } else {
@@ -104,18 +104,13 @@ public class Platno extends JPanel implements MouseListener {
         }
 
         g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
-        g2.fillOval((int) ((i + w/4) + s), (int) ((j + w/4) + v), (int) w / 2, (int) w / 2);
+        g2.fillOval((int) ((i + w / 4) + s), (int) ((j + w / 4) + v), (int) w / 2, (int) w / 2);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (Vodja.getIgra() == null) {
-            return;
-        }
-        if (Vodja.getIgra().getStanje() != Stanje.V_TEKU) {
-            return;
-        }
-        if (Vodja.kdoJeNaVrsti().equals(Vrsta.CLOVEK)) {
+        if (Vodja.getIgra() != null && Vodja.getIgra().getStanje() == Stanje.V_TEKU
+                && Vodja.kdoJeNaVrsti().equals(Vrsta.CLOVEK)) {
             int x = e.getX();
             int y = e.getY();
             Vodja.getIgra().odigraj(getKoordinati(x, y));
@@ -151,28 +146,30 @@ public class Platno extends JPanel implements MouseListener {
     public void mouseReleased(MouseEvent arg0) {
 
     }
-    
+
     // izračuna koordinati (i, j) v polju glede na klik
     private Koordinati getKoordinati(int x, int y) {
-    	double sirina = getWidth();
-        double polovicaS = (sirina - (sirina * PADDING))/2;
+        double sirina = getWidth();
+        double polovicaS = sirina * (1 - PADDING) / 2;
         double visina = getHeight();
-        double polovicaV = (visina - (visina * PADDING))/2;
+        double polovicaV = visina * (1 - PADDING) / 2;
         double polovica = Math.min(polovicaS, polovicaV);
         double s = (sirina / 2) - polovica;
-        double v = (visina / 2 ) - polovica;
+        double v = (visina / 2) - polovica;
         double w = squareWidth();
-        
+        System.out.println(w);
+
         int i = (int) (((double) x - s) / w);
         int j = (int) (((double) y - v) / w);
+        System.out.println("Koordinati " + i + " " + j);
         return new Koordinati(i, j);
     }
-    
+
     public int getVelikost() {
-    	return velikost;
+        return velikost;
     }
-    
+
     public void setVelikost(int v) {
-    	velikost = v;
+        velikost = v;
     }
 }
