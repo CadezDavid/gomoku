@@ -14,6 +14,7 @@ public class Igra {
     private Stanje stanje;
     private Polje[][] plosca;
     private List<Koordinati> poteze;
+    private int velikost;
 
     /**
      * Konstruktor Igra, ki ustvari igro - kot igralca, ki je na 
@@ -22,16 +23,17 @@ public class Igra {
      * 
      * @param igralca - igralca, ki bosta igrala igro
      */
-    public Igra(EnumMap<Zetoni, Igralec> igralca) {
+    public Igra(EnumMap<Zetoni, Igralec> igralca, int v) {
+    	setVelikost(v);
         // Zacne crni
         naPotezi = Zetoni.CRNI;
         // Stanje se spremeni v V_TEKU
         stanje = Stanje.V_TEKU;
         // Plosca se po angl. "initialize" in napolni
         // s praznimi polji
-        plosca = new Polje[15][15];
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
+        plosca = new Polje[velikost][velikost];
+        for (int i = 0; i < velikost; i++) {
+            for (int j = 0; j < velikost; j++) {
                 plosca[i][j] = Polje.PRAZNO;
             }
         }
@@ -70,8 +72,8 @@ public class Igra {
     public void nakljucna() {
         int x = 0;
         int y = 0;
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
+        for (int i = 0; i < velikost; i++) {
+            for (int j = 0; j < velikost; j++) {
                 if (this.getPlosca()[i][j].equals(Polje.PRAZNO)) {
                     x = i;
                     y = j;
@@ -86,13 +88,13 @@ public class Igra {
      * Ustvari kopijo igre.
      */
     public Igra clone() {
-        Igra kopija = new Igra(this.getIgralca());
+        Igra kopija = new Igra(this.getIgralca(), this.getVelikost());
         kopija.setNaPotezi(this.getNaPotezi());
         kopija.setStanje(this.getStanje());
 
-        Polje[][] plosca = new Polje[15][15];
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
+        Polje[][] plosca = new Polje[velikost][velikost];
+        for (int i = 0; i < velikost; i++) {
+            for (int j = 0; j < velikost; j++) {
                 plosca[i][j] = this.getPlosca()[i][j];
             }
         }
@@ -110,11 +112,11 @@ public class Igra {
      */
     public List<Koordinati> moznePoteze() {
         Set<Koordinati> moznePoteze = new HashSet<Koordinati>();
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
+        for (int i = 0; i < velikost; i++) {
+            for (int j = 0; j < velikost; j++) {
                 if (getPlosca()[i][j] != Polje.PRAZNO) {
-                    for (int m = Math.max(0, i - 2); m < Math.min(i + 2, 15); m++) {
-                        for (int n = Math.max(0, j - 2); n < Math.min(j + 2, 15); n++) {
+                    for (int m = Math.max(0, i - 2); m < Math.min(i + 2, velikost); m++) {
+                        for (int n = Math.max(0, j - 2); n < Math.min(j + 2, velikost); n++) {
                             if (m != 0 || n != 0) {
                                 if (getPlosca()[m][n].equals(Polje.PRAZNO))
                                     moznePoteze.add(new Koordinati(m, n));
@@ -159,8 +161,8 @@ public class Igra {
      */
     public boolean preveriNeodloceno() {
         Polje[][] polje = this.getPlosca();
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
+        for (int i = 0; i < velikost; i++) {
+            for (int j = 0; j < velikost; j++) {
                 if (polje[i][j].equals(Polje.PRAZNO))
                     return false;
             }
@@ -196,7 +198,7 @@ public class Igra {
             else
                 break;
         }
-        for (int i = 1; i <= 14 - y; i++) {
+        for (int i = 1; i <= velikost - 1 - y; i++) {
             if (polje[x][y + i].equals(trenutno))
                 stevec++;
             else
@@ -224,7 +226,7 @@ public class Igra {
             else
                 break;
         }
-        for (int i = 1; i <= 14 - x; i++) {
+        for (int i = 1; i <= velikost - 1 - x; i++) {
             if (polje[x + i][y].equals(trenutno))
                 stevec++;
             else
@@ -253,7 +255,7 @@ public class Igra {
             else
                 break;
         }
-        for (int i = 1; i <= Math.min(14 - x, 14 - y); i++) {
+        for (int i = 1; i <= Math.min(velikost - 1 - x, velikost - 1 - y); i++) {
             if (polje[x + i][y + i].equals(trenutno))
                 stevec++;
             else
@@ -276,13 +278,13 @@ public class Igra {
         Polje trenutno = polje[x][y];
 
         int stevec = 0;
-        for (int i = 1; i <= Math.min(14 - x, y); i++) {
+        for (int i = 1; i <= Math.min(velikost - 1 - x, y); i++) {
             if (polje[x + i][y - i].equals(trenutno))
                 stevec++;
             else
                 break;
         }
-        for (int i = 1; i <= Math.min(x, 14 - y); i++) {
+        for (int i = 1; i <= Math.min(x, velikost - 1 - y); i++) {
             if (polje[x - i][y + i].equals(trenutno))
                 stevec++;
             else
@@ -306,6 +308,14 @@ public class Igra {
 
     public void setPoteze(List<Koordinati> poteze) {
         this.poteze = poteze;
+    }
+    
+    public int getVelikost() {
+    	return velikost;
+    }
+    
+    public void setVelikost(int v) {
+    	velikost = v;
     }
 
 }

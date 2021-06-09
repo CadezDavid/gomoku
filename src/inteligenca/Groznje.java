@@ -85,8 +85,8 @@ public class Groznje {
      */
     private static int poisciVzorec(Polje[][] plosca, Polje[] vzorec) {
         int stevec = 0;
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15 - vzorec.length + 1; j++) {
+        for (int i = 0; i < plosca.length; i++) {
+            for (int j = 0; j < plosca.length - vzorec.length + 1; j++) {
                 boolean b = true;
                 for (int k = 0; k < vzorec.length; k++) {
                     if (vzorec[k] != plosca[i][j + k]) {
@@ -99,8 +99,8 @@ public class Groznje {
                 }
             }
         }
-        for (int i = 0; i < 15 - vzorec.length + 1; i++) {
-            for (int j = 0; j < 15; j++) {
+        for (int i = 0; i < plosca.length - vzorec.length + 1; i++) {
+            for (int j = 0; j < plosca.length; j++) {
                 boolean b = true;
                 for (int k = 0; k < vzorec.length; k++) {
                     if (vzorec[k] != plosca[i + k][j]) {
@@ -113,8 +113,8 @@ public class Groznje {
                 }
             }
         }
-        for (int i = 0; i < 15 - vzorec.length; i++) {
-            for (int j = 0; j < 15 - vzorec.length; j++) {
+        for (int i = 0; i < plosca.length - vzorec.length; i++) {
+            for (int j = 0; j < plosca.length - vzorec.length; j++) {
                 boolean b1 = true;
                 for (int k = 0; k < vzorec.length; k++) {
                     if (vzorec[k] != plosca[i + k][j + k]) {

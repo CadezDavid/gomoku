@@ -17,10 +17,10 @@ public class Vodja {
 
     private static Okno okno;
     private static Igra igra;
-    private static Inteligenca racunalnik = new Inteligenca(3);
+    private static Inteligenca racunalnik = new Inteligenca(2);
 
     public static void ustvariNovoIgro(EnumMap<Zetoni, Igralec> igralca) {
-        igra = new Igra(igralca);
+        igra = new Igra(igralca, 12);
         cikel();
     }
 

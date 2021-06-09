@@ -17,17 +17,20 @@ import logika.Zetoni;
 import splosno.Koordinati;
 import vodja.Vodja;
 
+@SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener {
 
     private final static double LINE_WIDTH = 0.05;
     private final static double PADDING = 0.05;
     private static Color ozadje = new Color(255, 218, 179);
+    private int velikost;
     
 
-    public Platno() {
+    public Platno(int v) {
         setPreferredSize(getPreferredSize());
         setBackground(ozadje);
         addMouseListener(this);
+        setVelikost(v);
     }
 
     public Dimension getPreferredSize() {
@@ -35,7 +38,7 @@ public class Platno extends JPanel implements MouseListener {
     }
 
     private double squareWidth() {
-        return (Math.min(getWidth(), getHeight()) - (Math.min(getWidth(), getHeight()) * PADDING)) / 15;
+        return (Math.min(getWidth(), getHeight()) - (Math.min(getWidth(), getHeight()) * PADDING)) / velikost;
     }
 
     protected void paintComponent(Graphics g) {
@@ -53,15 +56,15 @@ public class Platno extends JPanel implements MouseListener {
         // narišemo črte
         g2.setColor(Color.BLACK);
         g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
-        for (int i = 0; i < 16; i++) {
-            g2.drawLine((int) ((i * w) + s), (int) (v), (int) (i * w + s), (int) (15 * w + v));
-            g2.drawLine((int) (s), (int) ((i * w) + v), (int) (15 * w+ s) , (int) (i * w+ v));
+        for (int i = 0; i < velikost + 1; i++) {
+            g2.drawLine((int) ((i * w) + s), (int) (v), (int) (i * w + s), (int) (velikost * w + v));
+            g2.drawLine((int) (s), (int) ((i * w) + v), (int) (velikost * w+ s) , (int) (i * w+ v));
         }
 
         if (Vodja.getIgra() != null) {
             Polje[][] plosca = Vodja.getIgra().getPlosca();
-            for (int i = 0; i < 15; i++) {
-                for (int j = 0; j < 15; j++) {
+            for (int i = 0; i < velikost; i++) {
+                for (int j = 0; j < velikost; j++) {
                     Koordinati k = new Koordinati(i, j);
                     switch (plosca[i][j]) {
                         case BELI:
@@ -163,5 +166,13 @@ public class Platno extends JPanel implements MouseListener {
         int i = (int) (((double) x - s) / w);
         int j = (int) (((double) y - v) / w);
         return new Koordinati(i, j);
+    }
+    
+    public int getVelikost() {
+    	return velikost;
+    }
+    
+    public void setVelikost(int v) {
+    	velikost = v;
     }
 }

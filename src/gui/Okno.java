@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
+import java.util.Hashtable;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -18,6 +19,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeListener;
 
 import logika.Igralec;
 import logika.Vrsta;
@@ -32,20 +35,18 @@ public class Okno extends JFrame implements ActionListener {
     private JMenuItem igraClovekClovek;
     private JMenuItem igraRacunalnikClovek;
     private JMenuItem igraClovekRacunalnik;
-    // private JMenuItem miniMax;
-    // private JMenuItem alphaBeta;
+    
+    private JMenuItem velikostIgre;
+    
     private JPanel orodjarna;
     private JPanel zacetni;
     private JButton gumbZaNovoIgro;
-    private JButton gumbCC;
-    private JButton gumbCR;
-    private JButton gumbRC;
     private JLabel status;
+	private JMenu velikost;
  
 
     
     public Okno(int sirina, int visina) {
-        // Vse to sem vzel s predavanj ...
         this.setTitle("Gomoku");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
@@ -73,21 +74,39 @@ public class Okno extends JFrame implements ActionListener {
         igra_menu.add(igraClovekRacunalnik);
         igraClovekRacunalnik.addActionListener(this);
         
+       
+        JMenu igra_nastavitve = new JMenu("Nastavitve");
+        menu_bar.add(igra_nastavitve);
         
-        // // tip racunalnika
-        // JMenu inteligenca = new JMenu("Inteligenca");
-        // menu_bar.add(inteligenca);
-
-        // miniMax = new JMenuItem("MiniMax");
-        // inteligenca.add(miniMax);
-        // miniMax.addActionListener(this);
-
-        // alphaBeta = new JMenuItem("AlphaBeta");
-        // inteligenca.add(alphaBeta);
-        // alphaBeta.addActionListener(this);
+        velikostIgre = new JMenuItem("Velikost igralnega polja");
+        igra_nastavitve.add(velikostIgre);
+        velikostIgre.addActionListener(this);
         
-     // platno
-        platno = new Platno();
+        velikost = new JMenu("Velikost");
+		igra_menu.add(velikost);		
+		
+		JSlider izberiVelikost = new JSlider(5, 20, 15);
+		velikost.add(izberiVelikost);
+		izberiVelikost.addChangeListener((ChangeListener) this);
+		
+		izberiVelikost.setPaintTicks(true);
+		izberiVelikost.setMajorTickSpacing(1);
+		izberiVelikost.setPaintTicks(true);
+        
+        Hashtable<Integer, JLabel> labelTableVelikost = new Hashtable<Integer, JLabel>();
+		labelTableVelikost.put(7, new JLabel("7"));
+		labelTableVelikost.put(10, new JLabel("10"));
+		labelTableVelikost.put(12, new JLabel("12"));
+		labelTableVelikost.put(15, new JLabel("15"));
+		labelTableVelikost.put(17, new JLabel("17"));
+		labelTableVelikost.put(20, new JLabel("20"));
+		labelTableVelikost.put(25, new JLabel("25"));
+		izberiVelikost.setLabelTable(labelTableVelikost);
+		izberiVelikost.setPaintLabels(true);
+        menu_bar.add(velikost);
+		
+		// platno
+        platno = new Platno(12);
         // glavnaPlosca.add(platno, BorderLayout.CENTER);
         platno.setVisible(true);
         
@@ -112,6 +131,8 @@ public class Okno extends JFrame implements ActionListener {
         getContentPane().add(status, status_layout);
         status.setVisible(true);
         
+        
+        
         ///////////////////////////////////////////////////////////////////////////////////////////
         // vrstica za začeti novo igro
         orodjarna = new JPanel();
@@ -127,27 +148,15 @@ public class Okno extends JFrame implements ActionListener {
         
         ///////////////////////////////////////////////////////////////////////////////////////////
         
-        zacetni = new JPanel();
-        gumbCC = new JButton("Človek - človek");
-        gumbCC.addActionListener(this);
-        zacetni.add(gumbCC);
-        gumbCR = new JButton("Človek - računalnik");
-        gumbCR.addActionListener(this);
-        zacetni.add(gumbCR);
-        gumbRC = new JButton("Računalnik - človek");
-        gumbRC.addActionListener(this);
-        zacetni.add(gumbRC);
-        GridBagConstraints zacetni_layout = new GridBagConstraints();
-        zacetni_layout.gridx = 0;
-        zacetni_layout.gridy = 3;
-        zacetni_layout.anchor = GridBagConstraints.CENTER;
-        zacetni.setVisible(true);
-        getContentPane().add(zacetni, zacetni_layout);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         EnumMap<Zetoni, Igralec> igralca = new EnumMap<Zetoni, Igralec>(Zetoni.class);
+        if (e.getSource() == velikostIgre) {
+        	
+        }
         if (e.getSource() == igraRacunalnikClovek) {
             igralca.put(Zetoni.CRNI, new Igralec(Vrsta.RACUNALNIK, "milan"));
             igralca.put(Zetoni.BELI, new Igralec(Vrsta.CLOVEK, "janko")); 
@@ -159,8 +168,10 @@ public class Okno extends JFrame implements ActionListener {
             igralca.put(Zetoni.CRNI, new Igralec(Vrsta.CLOVEK, "ciril"));
         } else if (e.getSource() == gumbZaNovoIgro) {
         	igralca = Vodja.getIgra().getIgralca();
+        } else if (e.getSource() == izberiVelikost) {
+        	///////
         }
-        Vodja.ustvariNovoIgro(igralca);
+        Vodja.ustvariNovoIgro(igralca, velikost.);
         
     }
 

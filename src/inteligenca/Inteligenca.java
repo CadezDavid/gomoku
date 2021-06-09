@@ -52,7 +52,7 @@ public class Inteligenca extends KdoIgra {
         List<Koordinati> moznePoteze = igra.moznePoteze();
         
         // izmed možnih potez izberemo najboljše
-        List<PotezaZOceno> najboljse = izberiNajboljse(igra, moznePoteze, igra.getNaPotezi(), 150);
+        List<PotezaZOceno> najboljse = izberiNajboljse(igra, moznePoteze, igra.getNaPotezi(), 20);
         
         // seznam potez z oceno pretvorimo v seznam koordinat
         List<Koordinati> najboljseKoordinate = new LinkedList<Koordinati>();
