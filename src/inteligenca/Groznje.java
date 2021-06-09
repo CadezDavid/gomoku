@@ -29,7 +29,7 @@ public class Groznje {
         return 100 * poisciVzorec(plosca, vzorec);
     }
 
-    // straight four: _XXXX_
+    // straight four: _XXXX_, _XXXX, XXXX_
     private static int straightFour(Polje[][] plosca, Zetoni naVrsti) {
         Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
         Polje[] vzorec1 = { Polje.PRAZNO, p, p, p, p, Polje.PRAZNO };
@@ -46,7 +46,7 @@ public class Groznje {
         return 300 * poisciVzorec(plosca, vzorec);
     }
 
-    // thrre and one: XXX_X
+    // thrre and one: XXX_X, X_XXX
     private static int threeAndOne(Polje[][] plosca, Zetoni naVrsti) {
         Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
         Polje[] vzorec1 = { p, p, p, Polje.PRAZNO, p };
@@ -54,7 +54,7 @@ public class Groznje {
         return 200 * poisciVzorec(plosca, vzorec1) + 200 * poisciVzorec(plosca, vzorec2);
     }
 
-    // broken three: _X_XX_
+    // broken three: _X_XX_, _XX_X_
     private static int brokenThree(Polje[][] plosca, Zetoni naVrsti) {
         Polje p = (naVrsti == Zetoni.CRNI ? Polje.BELI : Polje.CRNI);
         Polje[] vzorec1 = { Polje.PRAZNO, p, Polje.PRAZNO, p, p, Polje.PRAZNO };
