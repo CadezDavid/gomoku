@@ -31,7 +31,9 @@ public class Inteligenca extends KdoIgra {
     }
 
     /**
-     * 
+     * Algoritem alphaBeta, ki vrne seznam najbolje ocenjenjih 
+     * potez na podlagi tega, kako bi se igra odvila, če bi odigrali
+     * možno potezo.
      * @param igra - igra, ki jo igramo
      * @param alpha
      * @param beta
