@@ -43,6 +43,10 @@ public class Platno extends JPanel implements MouseListener {
         return new Dimension(400, 400);
     }
 
+    /**
+     * Izračuna, kakšna naj bo širina polja glede na velikost okna.
+     * @return - širina polja
+     */
     private double squareWidth() {
         return Math.min(getWidth(), getHeight()) * (1 - PADDING) / (double) velikost;
     }
@@ -59,15 +63,15 @@ public class Platno extends JPanel implements MouseListener {
         double v = (visina / 2) - polovica;
         double w = squareWidth();
 
-        // narišemo črte
+        // narišemo črte - igralno polje
         g2.setColor(Color.BLACK);
         g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
         for (int i = 0; i < velikost + 1; i++) {
             g2.drawLine((int) ((i * w) + s), (int) (v), (int) (i * w + s), (int) (velikost * w + v));
             g2.drawLine((int) (s), (int) ((i * w) + v), (int) (velikost * w + s), (int) (i * w + v));
         }
-        System.out.println(velikost);
-
+        // če je igra v teku ali pa že končana, 
+        // narišemo na ploščo še vse žetone
         if (Vodja.getIgra() != null) {
             Polje[][] plosca = Vodja.getIgra().getPlosca();
             for (int i = 0; i < velikost; i++) {
@@ -88,6 +92,12 @@ public class Platno extends JPanel implements MouseListener {
         }
     }
 
+    /**
+     * Ustrezno pobarva kvadratek
+     * @param g2
+     * @param zeton - žeton, ki je odigral koordinati
+     * @param koordinati - koordinati, ki ju igramo
+     */
     public void paintSquare(Graphics2D g2, Zetoni zeton, Koordinati koordinati) {
         double sirina = getWidth();
         double polovicaS = sirina * (1 - PADDING) / 2;
@@ -112,10 +122,13 @@ public class Platno extends JPanel implements MouseListener {
         }
         g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
         g2.fillOval((int) ((i + w / 4) + s), (int) ((j + w / 4) + v), (int) w / 2, (int) w / 2);
+        
+        // preverimo, ali obstajajo zmagovalne koordinate,in če ja, obkrožimo zmagovalne
+        // žetone z zmagovalno barvo
         if (Vodja.getIgra().getZmagovalne() != null) {
         	List<Koordinati> z = Vodja.getIgra().getZmagovalne() ;
         	if (z.contains(koordinati)) {
-        		g2.setColor(Color.RED);
+        		g2.setColor(zmagovalna);
         		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
         		g2.drawOval((int) ((i + w / 4) + s), (int) ((j + w / 4) + v), (int) w / 2, (int) w / 2);
         	}
@@ -162,7 +175,12 @@ public class Platno extends JPanel implements MouseListener {
 
     }
 
-    // izračuna koordinati (i, j) v polju glede na klik
+    /**
+     * Izračuna koordinati (i, j) v polju glede na klik
+     * @param x - x koordinata klika
+     * @param y - y koordinata klika
+     * @return - koordinati, ki ju želimo odigrati
+     */
     private Koordinati getKoordinati(int x, int y) {
         double sirina = getWidth();
         double polovicaS = sirina * (1 - PADDING) / 2;
@@ -172,11 +190,9 @@ public class Platno extends JPanel implements MouseListener {
         double s = (sirina / 2) - polovica;
         double v = (visina / 2) - polovica;
         double w = squareWidth();
-        System.out.println(w);
 
         int i = (int) (((double) x - s) / w);
         int j = (int) (((double) y - v) / w);
-        System.out.println("Koordinati " + i + " " + j);
         return new Koordinati(i, j);
     }
 
