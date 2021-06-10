@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,11 +10,13 @@ import java.util.EnumMap;
 import java.util.Hashtable;
 
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -24,23 +27,40 @@ import logika.Vrsta;
 import logika.Zetoni;
 import vodja.Vodja;
 
-// @SuppressWarnings("serial")
+@SuppressWarnings("serial")
 public class Okno extends JFrame implements ActionListener, ChangeListener {
 
     private Platno platno;
 
+    private JMenuBar menu_bar;
+    
+    private JMenu igra_menu;
     private JMenuItem igraClovekClovek;
     private JMenuItem igraRacunalnikClovek;
     private JMenuItem igraClovekRacunalnik;
-    private JMenuBar menu_bar;
-    private JMenu igra_menu;
-
+    
+    private JMenu barve_menu;
+    private JMenuItem barva_crnega;
+    private JMenuItem barva_belega;
+    private JMenuItem barva_ozadja;
+    
+    private JMenu imena;
+    private JMenuItem imeC;
+    private JMenuItem imeB;
+    
     private JPanel orodjarna;
     private JButton gumbZaNovoIgro;
     private JLabel status;
     private JMenu velikost;
     private JSlider izberiVelikost;
     private int v = 15;
+    
+    private Color crn = Color.BLACK;
+    private Color bel = Color.WHITE;
+    private Color ozadje = new Color(255, 218, 179);
+    
+    private String imeCrnega = "črni";
+    private String imeBelega = "beli"; 
 
     public Okno(int sirina, int visina) {
         this.setTitle("Gomoku");
@@ -64,6 +84,7 @@ public class Okno extends JFrame implements ActionListener, ChangeListener {
         igraClovekRacunalnik = new JMenuItem("Človek - računalnik");
         igra_menu.add(igraClovekRacunalnik);
         igraClovekRacunalnik.addActionListener(this);
+       
 
         velikost = new JMenu("Velikost");
         igra_menu.add(velikost);
@@ -87,9 +108,35 @@ public class Okno extends JFrame implements ActionListener, ChangeListener {
         izberiVelikost.setLabelTable(labelTableVelikost);
         izberiVelikost.setPaintLabels(true);
         menu_bar.add(velikost);
+        
+        barve_menu = new JMenu("Barve žetonov in ozadja");
+        menu_bar.add(barve_menu);
+        
+        barva_crnega = new JMenuItem("Barva črnih žetonov");
+        barve_menu.add(barva_crnega);
+        barva_crnega.addActionListener(this);
+        
+        barva_belega = new JMenuItem("Barva belih žetonov");
+        barve_menu.add(barva_belega);
+        barva_belega.addActionListener(this);
+        
+        barva_ozadja = new JMenuItem("Barva ozadja");
+        barve_menu.add(barva_ozadja);
+        barva_ozadja.addActionListener(this);
 
+        imena = new JMenu("Imena igralcev");
+        menu_bar.add(imena);
+        
+        imeC = new JMenuItem ("Ime črnega igracla");
+        imena.add(imeC);
+        imeC.addActionListener(this);
+        
+        imeB = new JMenuItem("Ime belega igralca");
+        imena.add(imeB);
+        imeB.addActionListener(this);
+        
         // platno
-        setPlatno(new Platno(v));
+        setPlatno(new Platno(v, crn, bel, ozadje));
 
 
         // statusna vrstica
@@ -137,9 +184,39 @@ public class Okno extends JFrame implements ActionListener, ChangeListener {
             menu_bar.remove(velikost);
             Vodja.ustvariNovoIgro(igralca, v);
             platno.setVelikost(v);
+        } else if (e.getSource() == gumbZaNovoIgro) {
+            menu_bar.remove(velikost);
+            Vodja.ustvariNovoIgro(Vodja.getIgra().getIgralca(), v);
+            platno.setVelikost(v);
+        } else if (e.getSource() == barva_crnega) {
+        	Color barva = JColorChooser.showDialog(this, "Izberite barvo črnih žetonov", crn);
+			if (barva != null)  {
+				crn = barva;
+				platno.setCrn(crn);
+			}
+        } else if (e.getSource() == barva_belega) {
+        	Color barva = JColorChooser.showDialog(this, "Izberite barvo belih žetonov", bel);
+			if (barva != null)  {
+				bel = barva;
+				platno.setBel(bel);
+			} 
+        } else if (e.getSource() == barva_ozadja) {
+        	Color barva = JColorChooser.showDialog(this, "Izberite barvo ozadja", ozadje);
+			if (barva != null)  {
+				ozadje = barva;
+				platno.setBackground(barva);
+			}
+        } else if (e.getSource() == imeC) {
+        	String imeC = JOptionPane.showInputDialog("Vnesite ime črnega igralca:");
+        	if (imeC != null) imeCrnega = imeC;
+		} else if (e.getSource() == imeB) {
+			String imeB = JOptionPane.showInputDialog("Vnesite ime belega igralca");
+			if (imeB != null) imeBelega = imeB;
+		}
+     
         }
 
-    }
+    
 
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
@@ -149,17 +226,17 @@ public class Okno extends JFrame implements ActionListener, ChangeListener {
     public void osveziGUI() {
         switch (Vodja.getIgra().getStanje()) {
             case V_TEKU:
-                String x = Vodja.getIgra().getNaPotezi().equals(Zetoni.BELI) ? "beli" : "črni";
+                String x = Vodja.getIgra().getNaPotezi().equals(Zetoni.BELI) ? imeBelega : imeCrnega;
                 status.setText("Na potezi je " + x + ".");
                 orodjarna.setVisible(false);
                 break;
             case ZMAGA_BELI:
-                status.setText("Zmagal je beli.");
+                status.setText("Zmagal je " + imeBelega + ".");
                 orodjarna.setVisible(true);
                 menu_bar.add(velikost);
                 break;
             case ZMAGA_CRNI:
-                status.setText("Zmagal je črni.");
+                status.setText("Zmagal je " + imeCrnega + ".");
                 orodjarna.setVisible(true);
                 menu_bar.add(velikost);
                 break;

@@ -17,19 +17,24 @@ import logika.Zetoni;
 import splosno.Koordinati;
 import vodja.Vodja;
 
-// @SuppressWarnings("serial")
+@SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener {
 
     private final static double LINE_WIDTH = 0.05;
     private final static double PADDING = 0.05;
-    private static Color ozadje = new Color(255, 218, 179);
     private int velikost;
+    private Color bel;
+    private Color crn;
+    private Color ozadje;
 
-    public Platno(int v) {
+    public Platno(int v, Color crn, Color bel, Color ozadje) {
         setPreferredSize(getPreferredSize());
-        setBackground(ozadje);
+        setOzadje(ozadje);
+        setBackground(getOzadje());
         addMouseListener(this);
         setVelikost(v);
+        setBel(bel);
+        setCrn(crn);
     }
 
     public Dimension getPreferredSize() {
@@ -98,9 +103,9 @@ public class Platno extends JPanel implements MouseListener {
         double j = y * w;
 
         if (zeton.equals(Zetoni.BELI)) {
-            g2.setColor(Color.WHITE);
+            g2.setColor(bel);
         } else {
-            g2.setColor(Color.BLACK);
+            g2.setColor(crn);
         }
 
         g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
@@ -172,4 +177,29 @@ public class Platno extends JPanel implements MouseListener {
     public void setVelikost(int v) {
         velikost = v;
     }
+    
+    public void setBel(Color b) {
+    	bel = b;
+    }
+    
+    public Color getBel() {
+    	return bel;
+    }
+    
+    public void setCrn(Color c) {
+    	crn = c;
+    }
+    
+    public Color getCrn() {
+    	return crn;
+    }
+    
+    public void setOzadje(Color o) {
+    	ozadje = o;
+    }
+    
+    public Color getOzadje() {
+    	return ozadje;
+    }
+    
 }
