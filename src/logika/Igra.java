@@ -15,7 +15,9 @@ public class Igra {
     private Polje[][] plosca;
     private List<Koordinati> poteze;
     private int velikost;
+    private List<Koordinati> zmagovalnaVrsta = null;
 
+    
     /**
      * Konstruktor Igra, ki ustvari igro - kot igralca, ki je na 
      * potezi, nastavi črnega, saj črni začne. Stanje igre nastavi na
@@ -55,6 +57,7 @@ public class Igra {
         if (plosca[koordinati.getX()][koordinati.getY()] == Polje.PRAZNO) {
             plosca[koordinati.getX()][koordinati.getY()] = (naPotezi == Zetoni.BELI) ? Polje.BELI : Polje.CRNI;
             if (preveriZmago(koordinati)) {
+            	zmagovalnaVrsta = zmagovalnaVrsta(koordinati);
                 stanje = (naPotezi == Zetoni.BELI) ? Stanje.ZMAGA_BELI : Stanje.ZMAGA_CRNI;
                 }
             if (preveriNeodloceno()) {
@@ -294,6 +297,133 @@ public class Igra {
         return stevec + 1 >= 5;
 
     }
+    
+    ///////////
+    public List<Koordinati> zmagovalnaVrsta (Koordinati k){
+    	if (preveriVrsto(k) == true) {
+    		return najdiVrsto(k);
+    	} else if (preveriStolpec(k) == true) {
+    		return najdiStolpec(k);
+    	} else if (preveriDiagonaloDD(k) == true) {
+    		return najdiDiagonaloDD(k);
+    	} else return najdiDiagonaloDG(k);
+    }
+    
+    public List<Koordinati> najdiVrsto(Koordinati koordinati) {
+        int x = koordinati.getX();
+        int y = koordinati.getY();
+        List<Koordinati> vrsta = new LinkedList<Koordinati>();
+        Polje[][] polje = this.getPlosca();
+        Polje trenutno = polje[x][y];
+        vrsta.add(new Koordinati(x, y));
+        
+        int stevec = 0;
+        for (int i = 1; i <= y; i++) {
+            if (polje[x][y - i].equals(trenutno))
+            {
+            	vrsta.add(new Koordinati(x, y - i));
+                stevec++;
+            } else
+                break;
+        }
+        for (int i = 1; i <= 14 - y; i++) {
+            if (polje[x][y + i].equals(trenutno)) {
+            	vrsta.add(new Koordinati(x, y + i));
+                stevec++;
+            } else
+                break;
+        }
+        if (stevec + 1 >= 5) return vrsta;
+        else return null;
+    }
+    
+    public List<Koordinati> najdiStolpec(Koordinati koordinati) {
+        int x = koordinati.getX();
+        int y = koordinati.getY();
+        List<Koordinati> stolpec = new LinkedList<Koordinati>();
+        Polje[][] polje = this.getPlosca();
+        Polje trenutno = polje[x][y];
+        stolpec.add(new Koordinati(x, y));
+        
+        int stevec = 0;
+        for (int i = 1; i <= x; i++) {
+            if (polje[x - i][y].equals(trenutno)) {
+            	stolpec.add(new Koordinati(x - i, y));
+                stevec++;
+            }
+            else
+                break;
+        }
+        for (int i = 1; i <= 14 - x; i++) {
+            if (polje[x + i][y].equals(trenutno)){
+            	stolpec.add(new Koordinati(x + i, y));
+                stevec++;
+            } else
+                break;
+        }
+        if (stevec + 1 >= 5) return stolpec;
+        else return null;
+    }
+    
+    public List<Koordinati> najdiDiagonaloDD(Koordinati koordinati) {
+        int x = koordinati.getX();
+        int y = koordinati.getY();
+        List<Koordinati> diag = new LinkedList<Koordinati>();
+        Polje[][] polje = this.getPlosca();
+        Polje trenutno = polje[x][y];
+        diag.add(new Koordinati(x, y));
+        
+        int stevec = 0;
+        for (int i = 1; i <= Math.min(x, y); i++) {
+            if (polje[x - i][y - i].equals(trenutno)){
+            	diag.add(new Koordinati(x - i, y - i));
+                stevec++;
+            }
+            else
+                break;
+        }
+        for (int i = 1; i <= Math.min(14 - x, 14 - y); i++) {
+            if (polje[x + i][y + i].equals(trenutno)){
+            	diag.add(new Koordinati(x + i, y + i));
+                stevec++;
+            } else
+                break;
+        }
+        if (stevec + 1 >= 5) return diag;
+        else return null;
+    }
+    
+    public List<Koordinati> najdiDiagonaloDG(Koordinati koordinati) {
+        int x = koordinati.getX();
+        int y = koordinati.getY();
+        List<Koordinati> diag = new LinkedList<Koordinati>();
+        Polje[][] polje = this.getPlosca();
+        Polje trenutno = polje[x][y];
+        diag.add(new Koordinati(x, y));
+        
+        int stevec = 0;
+        for (int i = 1; i <= Math.min(14 - x, y); i++) {
+            if (polje[x + i][y - i].equals(trenutno)){
+            	diag.add(new Koordinati(x + i, y - i));
+                stevec++;
+            }
+            else
+                break;
+        }
+        for (int i = 1; i <= Math.min(x, 14 - y); i++) {
+            if (polje[x - i][y + i].equals(trenutno)){
+            	diag.add(new Koordinati(x - i, y + i));
+                stevec++;
+            } else
+                break;
+        }
+        if (stevec + 1 >= 5) return diag;
+        else return null;
+    }
+    
+    
+    
+    ////////////
 
     public Zetoni getNaPotezi() {
         return naPotezi;
@@ -317,6 +447,10 @@ public class Igra {
     
     public void setVelikost(int v) {
     	velikost = v;
+    }
+    
+    public List<Koordinati> getZmagovalne(){
+    	return zmagovalnaVrsta;
     }
 
 }

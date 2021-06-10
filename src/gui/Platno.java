@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -26,6 +27,7 @@ public class Platno extends JPanel implements MouseListener {
     private Color bel;
     private Color crn;
     private Color ozadje;
+    private Color zmagovalna = Color.RED;
 
     public Platno(int v, Color crn, Color bel, Color ozadje) {
         setPreferredSize(getPreferredSize());
@@ -101,15 +103,23 @@ public class Platno extends JPanel implements MouseListener {
 
         double i = x * w;
         double j = y * w;
-
-        if (zeton.equals(Zetoni.BELI)) {
+        
+ 
+        if (zeton.equals(Zetoni.BELI)){
             g2.setColor(bel);
         } else {
             g2.setColor(crn);
         }
-
         g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
         g2.fillOval((int) ((i + w / 4) + s), (int) ((j + w / 4) + v), (int) w / 2, (int) w / 2);
+        if (Vodja.getIgra().getZmagovalne() != null) {
+        	List<Koordinati> z = Vodja.getIgra().getZmagovalne() ;
+        	if (z.contains(koordinati)) {
+        		g2.setColor(Color.RED);
+        		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
+        		g2.drawOval((int) ((i + w / 4) + s), (int) ((j + w / 4) + v), (int) w / 2, (int) w / 2);
+        	}
+        }
     }
 
     @Override
