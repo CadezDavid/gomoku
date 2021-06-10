@@ -70,23 +70,28 @@ public class Okno extends JFrame implements ActionListener, ChangeListener {
         // menu
         menu_bar = new JMenuBar();
         this.setJMenuBar(menu_bar);
+        
+        // menu za izbiro nove igre
         igra_menu = new JMenu("Nova igra");
         menu_bar.add(igra_menu);
-
+        
+        // gumb za igro: človek proti človeku
         igraClovekClovek = new JMenuItem("Človek – Človek");
         igra_menu.add(igraClovekClovek);
         igraClovekClovek.addActionListener(this);
 
+        // gumb za igro: računalnik proti človeku
         igraRacunalnikClovek = new JMenuItem("Računalnik – Človek");
         igra_menu.add(igraRacunalnikClovek);
         igraRacunalnikClovek.addActionListener(this);
 
+        // gumb za igro; človek proti računalniku
         igraClovekRacunalnik = new JMenuItem("Človek - računalnik");
         igra_menu.add(igraClovekRacunalnik);
         igraClovekRacunalnik.addActionListener(this);
        
-
-        velikost = new JMenu("Velikost");
+        // slider za izbiro velikosti polja
+        velikost = new JMenu("Velikost polja");
         igra_menu.add(velikost);
 
         izberiVelikost = new JSlider(5, 20, 15);
@@ -109,28 +114,35 @@ public class Okno extends JFrame implements ActionListener, ChangeListener {
         izberiVelikost.setPaintLabels(true);
         menu_bar.add(velikost);
         
+        // menu za izbiro barv žetonov in ozadja
         barve_menu = new JMenu("Barve žetonov in ozadja");
         menu_bar.add(barve_menu);
         
+        // gumb za nastavitev barve žetonov črnega
         barva_crnega = new JMenuItem("Barva črnih žetonov");
         barve_menu.add(barva_crnega);
         barva_crnega.addActionListener(this);
         
+        // gumb za nastavitev barve žetonov belega
         barva_belega = new JMenuItem("Barva belih žetonov");
         barve_menu.add(barva_belega);
         barva_belega.addActionListener(this);
         
+        // gumb za izbiro barve ozadja
         barva_ozadja = new JMenuItem("Barva ozadja");
         barve_menu.add(barva_ozadja);
         barva_ozadja.addActionListener(this);
-
+        
+        // menu za nastavljanje imen igralcev
         imena = new JMenu("Imena igralcev");
         menu_bar.add(imena);
         
+        // ime igralca, ki ima  privzeto črne žetone
         imeC = new JMenuItem ("Ime črnega igracla");
         imena.add(imeC);
         imeC.addActionListener(this);
         
+        // ime igralca, ki ima privzeto bele žetone
         imeB = new JMenuItem("Ime belega igralca");
         imena.add(imeB);
         imeB.addActionListener(this);
@@ -150,6 +162,7 @@ public class Okno extends JFrame implements ActionListener, ChangeListener {
         getContentPane().add(status, status_layout);
         status.setVisible(true);
 
+        // orodjarna, kjer lahko začnemo novo igro z enakimi igralci 
         orodjarna = new JPanel();
         gumbZaNovoIgro = new JButton("Začni znova.");
         gumbZaNovoIgro.addActionListener(this);
@@ -226,22 +239,29 @@ public class Okno extends JFrame implements ActionListener, ChangeListener {
     public void osveziGUI() {
         switch (Vodja.getIgra().getStanje()) {
             case V_TEKU:
+            	// izpišemo, kdo je na potezi
                 String x = Vodja.getIgra().getNaPotezi().equals(Zetoni.BELI) ? imeBelega : imeCrnega;
                 status.setText("Na potezi je " + x + ".");
                 orodjarna.setVisible(false);
                 break;
             case ZMAGA_BELI:
+            	// izpišemo, da je zmagal beli
                 status.setText("Zmagal je " + imeBelega + ".");
+                // pokažemo orodjarno, da lahko igralec začne znova
                 orodjarna.setVisible(true);
                 menu_bar.add(velikost);
                 break;
             case ZMAGA_CRNI:
+            	// izpišemo, da je zmagal črni
                 status.setText("Zmagal je " + imeCrnega + ".");
+                // pokažemo orodjarno, da lahko igralec začne znova
                 orodjarna.setVisible(true);
                 menu_bar.add(velikost);
                 break;
             case NEODLOCENO:
+            	// izpišemo, da je rezultat neodločen
                 status.setText("Neodločeno.");
+                // pokažemo orodjarno, da lahko igralec začne znova
                 orodjarna.setVisible(true);
                 menu_bar.add(velikost);
                 break;
