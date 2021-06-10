@@ -48,6 +48,7 @@ public class Igra {
      * Funkicja, ki preveri, ali je sta koordinati poteze, ki jo želim odigrati,
      * validni (če je polje prazno), in če sta, to potezo tudi odigra, nato
      * pa preveri, ali je poteza privedla do zmage ali pa neodločenega izida. 
+     * Če je privedla do zmage, še poišče seznam zmagovalnih koordinat in ga nastavi.
      * 
      * @param koordinati - koordinati poteze, ki jo želimo odigrati
      * @return - vrne true, če je bila poteza validna, in false, če je 
@@ -298,7 +299,11 @@ public class Igra {
 
     }
     
-    ///////////
+    /**
+     * Vrne seznam zmagovalnih koordinat.
+     * @param k - koordinati, ki smo ju nazadnje odigrali
+     * @return - seznam koordinat, ki tvorijo zmagovalno vrsto/stolpec/diagonalo
+     */
     public List<Koordinati> zmagovalnaVrsta (Koordinati k){
     	if (preveriVrsto(k) == true) {
     		return najdiVrsto(k);
@@ -309,6 +314,11 @@ public class Igra {
     	} else return najdiDiagonaloDG(k);
     }
     
+    /**
+     * Preveri vrsto.
+     * @param koordinati - koordinati, ki smo ju nazadnje odigrali
+     * @return - seznam zmagovalnih koordinat, če je
+     */
     public List<Koordinati> najdiVrsto(Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
@@ -337,6 +347,11 @@ public class Igra {
         else return null;
     }
     
+    /**
+     * Preveri stolpec.
+     * @param koordinati - koordinati, ki smo ju nazadnje odigrali
+     * @return - seznam zmagovalnih koordinat, če je
+     */
     public List<Koordinati> najdiStolpec(Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
@@ -365,6 +380,11 @@ public class Igra {
         else return null;
     }
     
+    /**
+     * Preveri diagonalo "desno dol"
+     * @param koordinati - koordinati, ki smo ju nazadnje odigrali
+     * @return - seznam zmagovalnih koordinat, če je
+     */
     public List<Koordinati> najdiDiagonaloDD(Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
@@ -393,6 +413,11 @@ public class Igra {
         else return null;
     }
     
+    /**
+     * Preveri diagonalo "desno gor"
+     * @param koordinati - koordinati, ki smo ju nazadnje odigrali
+     * @return - seznam zmagovalnih koordinat, če je
+     */
     public List<Koordinati> najdiDiagonaloDG(Koordinati koordinati) {
         int x = koordinati.getX();
         int y = koordinati.getY();
@@ -422,9 +447,7 @@ public class Igra {
     }
     
     
-    
-    ////////////
-
+ 
     public Zetoni getNaPotezi() {
         return naPotezi;
     }
